@@ -1,4 +1,4 @@
-function y = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep, arq)
+function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep, arq)
 
   %load all the parameters in a structure
   params.actFunct = actFunct;
@@ -10,4 +10,5 @@ function y = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
   params.adaptStep = adaptStep;
   params.arq = arq;
   params.layers = size(arq, 2) - 1;
+  
   params.w = initWeights(arq);
