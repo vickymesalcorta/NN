@@ -9,7 +9,6 @@ load('orderedSamples.mat');
 params.trainingInput = zeros(2, params.training);
 params.trainingInput = x(1:params.training,1:2)';
 
-
 params.trainingExpected = zeros(1, params.training);
 params.trainingExpected = x(1:params.training,3)';
 

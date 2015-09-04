@@ -6,7 +6,7 @@ function w = initWeights(arq)
 	w = struct();
 	for level = 1:(size(arq,2) - 1)
 		% Elemento i,j de la matriz es el peso para llegar A i DESDE j. Y el from es desde que layer to layer
-    w.(strcat("From_",num2str(level),"_to_",num2str(level+1))) = rand(arq(level+1), arq(level)+1);
-  end
+    	w.(strcat("From_",num2str(level),"_to_",num2str(level+1))) = rand(arq(level+1), arq(level)+1);
+  	end
 
 end
