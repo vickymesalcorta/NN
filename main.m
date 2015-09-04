@@ -10,5 +10,13 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
   params.adaptStep = adaptStep;
   params.arq = arq;
   params.layers = size(arq, 2) - 1;
-  
   params.w = initWeights(arq);
+  params.points = 10
+  params.training = 8;
+  params.test = params.points - params.training;
+
+  % 441 puntos
+  params = loadPoints(params);
+disp(params);
+
+end
