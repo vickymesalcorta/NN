@@ -1,6 +1,6 @@
 function w = initWeights(arq)
 
-	% Creates for each level (except the last) a matrix of weights [0,1] of the size nextLevel*currLevel+1
+	% Creates for each level (except the last) a matrix of weights [-1,1] of the size nextLevelxcurrLevel+1
 	% That +1 is for the threshold
 
 	w = struct();
