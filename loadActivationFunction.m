@@ -1,5 +1,6 @@
 function y = loadActivationFunction(params, actFunc, B)
 	% TESTEADAS PERO ESTARIA BUENO VERIFICAR DE NUEVO!!
+	% TODO NORMALIZAR!!!
 	if (actFunc == 1)
 		% Tangente hiperbolica
 		params.g = @(x)tanh(x.*B);
