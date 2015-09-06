@@ -12,11 +12,15 @@ params.trainingInput = x(1:params.training,1:2)';
 params.trainingExpected = zeros(1, params.training);
 params.trainingExpected = x(1:params.training,3)';
 
+params.trainingOutput = zeros(1, params.training);
+
 params.testInput = zeros(2, params.test);
 params.testInput = x(params.training+1:params.points,1:2)';
 
 params.testExpected = zeros(1, params.test);
 params.testExpected = x(params.training+1:params.points,3)';
+
+params.testOutput = zeros(2, params.test);
 
 p = params;
 end

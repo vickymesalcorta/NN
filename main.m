@@ -19,6 +19,8 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
   params.adaptDec = adaptDec;
   params.adaptStep = adaptStep;
   params.arq = arq;
+  % Ej: Arq = [2,4,5,1] levels = 4 y layers = 3
+  params.levels = size(arq, 2);
   params.layers = size(arq, 2) - 1;
   % Load weights, points and activation function
   params.w = initWeights(arq);
@@ -26,5 +28,5 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
   params = loadActivationFunction(params, actFunct, gBeta);
 disp(params);
 
-  trainNetwork(params);
+  trainedNetwork = trainNetwork(params);
 end
