@@ -10,4 +10,9 @@ function t = trainNetwork(params)
 	badSteps = 0;
 
 
+	wOld = struct ();
+	for layer = 1:params.layers
+		wOld.(num2str(layer)) = zeros(size(params.w.(num2str(layer))));
+	end
+
 end
