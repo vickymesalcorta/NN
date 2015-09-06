@@ -2,7 +2,6 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
 
   %load all the parameters in a structure
 
-
   % DEFINES:
   % params.points: cantidad de puntos totales
   % params.training: cantidad de puntos para entrenar
@@ -27,4 +26,5 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
   params = loadActivationFunction(params, actFunct, gBeta);
 disp(params);
 
+  trainNetwork(params);
 end
