@@ -3,15 +3,21 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
   %load all the parameters in a structure
 
   % DEFINES:
-  % params.points: cantidad de puntos totales
-  % params.training: cantidad de puntos para entrenar
+  % params.patterns: cantidad de patterns totales
+  % params.training: cantidad de pattern para entrenar
   % beta: beta con el que se define g(x)
+  % maxEpocs
+  % noise
   gBeta = 1;
-  % 441 puntos totales, uso menos para poder debuggear
-  params.points = 10;
+  params.maxEpocs = 1000;
+  params.maxBadSteps = 10;
+  params.noise = 0.0001;
+  % 441 patterns totales, uso menos para poder debuggear
+  params.patterns = 10;
   params.training = 8;  
   % END_DEFINES
-  params.test = params.points - params.training;
+
+  params.test = params.patterns - params.training;
   params.expError = expError;
   params.eta = eta;
   params.alpha = alpha;
@@ -22,11 +28,11 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
   % Ej: Arq = [2,4,5,1] levels = 4 y layers = 3
   params.levels = size(arq, 2);
   params.layers = size(arq, 2) - 1;
-  % Load weights, points and activation function
+  % Load weights, patterns and activation function
   params.w = initWeights(arq);
-  params = loadPoints(params);
+  params = loadPatterns(params);
   params = loadActivationFunction(params, actFunct, gBeta);
-disp(params);
 
   trainedNetwork = trainNetwork(params);
+
 end
