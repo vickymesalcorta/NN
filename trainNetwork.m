@@ -26,12 +26,11 @@ function t = trainNetwork(params)
     	badSteps = 0;
 	end
 
-	%3_ RUN PATTERN
+	%3_ BACKPROP
      totalError = [];
 	 for i = 1:size(params.training)
-	     trainingOutput = runPattern(params, w, trainingInput(:,i));
 
-	     backPropagation(params, w, i, trainingOutput);
+	    w = backPropagation(params, w, i, trainingInput);
 
 	    % answer = backPropagation(params,i,trainingOutput,w,varOld,eta,alpha);
 	    % w = answer.w;
