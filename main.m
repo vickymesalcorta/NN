@@ -25,8 +25,7 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
   params.adaptDec = adaptDec;
   params.adaptStep = adaptStep;
   params.arq = arq;
-  % Ej: Arq = [2,4,5,1] levels = 4 y layers = 3
-  params.levels = size(arq, 2);
+  % Ej: Arq = [2,4,5,1] layers = 3
   params.layers = size(arq, 2) - 1;
   % Load weights, patterns and activation function
   params.w = initWeights(arq);

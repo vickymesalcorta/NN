@@ -29,10 +29,13 @@ function t = trainNetwork(params)
 	%3_ RUN PATTERN
      totalError = [];
 	 for i = 1:size(params.training)
-	     trainingOutput = runPattern(w, trainingInput(:,i), params);             
-	     answer = backPropagation(params,i,trainingOutput,w,varOld,eta,alpha);
-	     w = answer.w;
-	     varOld = answer.var;          
+	     trainingOutput = runPattern(params, w, trainingInput(:,i));
+
+	     backPropagation(params, w, i, trainingOutput);
+
+	    % answer = backPropagation(params,i,trainingOutput,w,varOld,eta,alpha);
+	    % w = answer.w;
+	     %varOld = answer.var;          
 	%            totalError(i) = (1/2 * ((trainingExpected(:,i)-trainingOutput.V.(char('@' + params.layers+1))).^2));           
 	 end
 end

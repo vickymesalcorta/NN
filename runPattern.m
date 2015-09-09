@@ -1,8 +1,8 @@
-function ans = runPattern(w, xi, params)
+function trainingOutput = runPattern(params, w, xi)
 
-	neuralAns = struct();
+	trainingOutput = struct();
 
-	% output of the prev level and entry for current level
+	% Entry for current layer
 	v = xi;
 	% struct with input of current layers after g(h)
 	V = struct();
@@ -17,13 +17,9 @@ function ans = runPattern(w, xi, params)
 	   v = params.g(h);
 	   V.(num2str(layer)) = v;	   
 	end
-	
-	disp('H');
-	disp(H);
-	disp('V');
-	disp(V);
 
-	neuralAns.V = V;
-	neuralAns.H = H;
+	trainingOutput.V = V;
+	trainingOutput.H = H;
 
+	disp(trainingOutput);
 end
