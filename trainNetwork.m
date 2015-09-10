@@ -58,7 +58,6 @@ function trainedNetwork = trainNetwork(params)
 	    % Como hay que decrementar? Despues de UN paso malo? o despues de K pasos malos?
 	    % PARAMETROS ADAPTATIVOS con adaptStep > 0
 	    if params.adaptStep > 0 && iter >= 2
-
 	    	if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
 	    		% Paso bueno
 	    		alpha = params.alpha;
