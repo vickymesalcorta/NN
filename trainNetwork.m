@@ -6,9 +6,10 @@ function t = trainNetwork(params)
 	error = 1;
 	iter = 1;
 	epocs = 1;
-	alpha = params.alpha;
-	badSteps = 0;
 	w = params.w;
+	alpha = params.alpha;
+	eta = params.eta;
+	badSteps = 0;
 
 	wOld = struct ();
 	for layer = 1:params.layers
@@ -30,8 +31,7 @@ function t = trainNetwork(params)
      totalError = [];
 	 for i = 1:size(params.training)
 
-	    w = backPropagation(params, w, i, trainingInput);
-
+	    answer = backPropagation(params, w, i, trainingInput, eta, alpha);
 	    % answer = backPropagation(params,i,trainingOutput,w,varOld,eta,alpha);
 	    % w = answer.w;
 	     %varOld = answer.var;          
