@@ -1,0 +1,3 @@
+1_ En parametros adaptativos, se incrementa luego de K pasos buenos. Como hay que decrementar? Despues de UN paso malo? o despues de K pasos malos?
+2_ Como normalizo los numeros?
+3_ 

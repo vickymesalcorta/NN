@@ -1,7 +1,7 @@
-function t = trainNetwork(params)
+function trainedNetwork = trainNetwork(params)
 
 	% vars declarations
-	t = struct();
+	trainedNetwork = struct();
 	w = params.w;
 	alpha = params.alpha;
 	eta = params.eta;
@@ -9,6 +9,12 @@ function t = trainNetwork(params)
 	epocs = 1;
 	iter = 1;
 	badSteps = 0;
+	goodSteps = 0;
+	trainedNetwork.iterError = [];
+
+	% Esto es para usar cuando descarto un w en parametros adaptativos
+	lastW = w;
+	lastErrorVector = ones(params.training);
 
 	% Empiezo con variacion 0
 	varW = struct ();
@@ -38,13 +44,55 @@ function t = trainNetwork(params)
 		end
 
 		%4_ Run all patterns with last w and calculate the error for each one
-		totalError = [];
+		errorVector = [];
 	    for i = 1:params.training
 	        output = runPattern(params, w, trainingInput(:,i));
-	        totalError(i) = 1/2 * ((trainingExpected(:,i) - output.V.(num2str(params.layers))) .^2);
+	        errorVector(i) = 1/2 * ((trainingExpected(:,i) - output.V.(num2str(params.layers))) .^2);
 	    end
+	    % error after all imputs used once        
+	    meanError = mean(errorVector);
+	    trainedNetwork.iterError(iter) = meanError;
 
-	    %error after all imputs used once        
-	    meanError = mean(totalError);
+	    % PREGUNTAR:
+	    % En parametros adaptativos, se incrementa luego de K pasos buenos.
+	    % Como hay que decrementar? Despues de UN paso malo? o despues de K pasos malos?
+	    % PARAMETROS ADAPTATIVOS con adaptStep > 0
+	    if params.adaptStep > 0 && iter >= 2
+
+	    	if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
+	    		% Paso bueno
+	    		alpha = params.alpha;
+	    		badSteps = 0;
+	    		goodSteps = goodSteps + 1;
+				% Si es un paso bueno, marco este nuevo peso como el ultimo valido
+				lastW = w;
+				lastErrorVector = errorVector;
+				% Desp de adaptStep modificar eta
+				if goodSteps == params.adaptStep
+					eta = eta + params.adaptInc;
+					goodSteps = 0;
+				end
+	    	else
+	    		% Paso malo
+	    		alpha = 0;
+    			badSteps = badSteps + 1;
+    			goodSteps = 0;
+    			% esta bien? o tengo que hacer esto luego de adaptStep malos?
+    			eta = (1-params.adaptDec) * eta;
+    			iter = iter-1;
+    			% Si es un paso malo, tiro los pesos y vuelvo al anterior
+    			w = lastW;
+    			errorVector = lastErrorVector;
+	    	end
+	   	end
+
+        iter = iter + 1;
+        epocs = epocs + 1;
 	end
+
+	trainedNetwork.w = w;
+	trainedNetwork.errorVector = errorVector;
+    trainedNetwork.eta = eta;
+	trainedNetwork.iter = iter;
+    trainedNetwork.epocs = epocs;
 end
