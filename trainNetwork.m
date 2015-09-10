@@ -11,9 +11,9 @@ function t = trainNetwork(params)
 	badSteps = 0;
 
 	% Empiezo con variacion 0
-	oldVarW = struct ();
+	varW = struct ();
 	for i = 1:params.layers
-	    oldVarW.(num2str(i)) = zeros(size(params.w.(num2str(i))));
+	    varW.(num2str(i)) = zeros(size(params.w.(num2str(i))));
 	end
 
 	% Lazy and because we only care the error
@@ -32,9 +32,9 @@ function t = trainNetwork(params)
 
 		%3_ BACKPROP
 		for i = 1:params.training
-		    answer = backPropagation(params, w, i, trainingInput, eta, alpha, oldVarW);
+		    answer = backPropagation(params, w, i, trainingInput, eta, alpha, varW);
 		    w = answer.newW;
-		    oldVarW = answer.newVarW;
+		    varW = answer.newVarW;
 		end
 
 		%4_ Run all patterns with last w and calculate the error for each one
