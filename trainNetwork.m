@@ -30,9 +30,17 @@ function t = trainNetwork(params)
 
 	%3_ BACKPROP
      totalError = [];
-	for i = 1:size(params.training)
+	for i = 1:params.training
 	    answer = backPropagation(params, w, i, trainingInput, eta, alpha, varOld);
 	    w = answer.wNew;
 	    varOld = answer.varW;
-	 end
+	end
+
+	%4_ Run all patterns with last w and calculate the error for each one
+    for i = 1:params.training
+        output = runPattern(params, w, trainingInput(:,i));
+        totalError(i) = 1/2 * ((trainingExpected(:,i) - output.V.(num2str(params.layers))) .^2);
+    end
+
+
 end
