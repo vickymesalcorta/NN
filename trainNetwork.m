@@ -11,13 +11,13 @@ function t = trainNetwork(params)
 	badSteps = 0;
 
 	% Empiezo con variacion 0
-	varOld = struct ();
+	oldVarW = struct ();
 	for i = 1:params.layers
-	    varOld.(num2str(i)) = zeros(size(params.w.(num2str(i))));
+	    oldVarW.(num2str(i)) = zeros(size(params.w.(num2str(i))));
 	end
 
 	% Lazy and because we only care the error
-    while meanError > params.expError &&  epocs < params.maxLimit
+    while meanError > params.expError &&  epocs < params.maxEpocs
 
 	    % 1_ SHUFFLE PATTERNS (input and expected) with the same order
 	    shuffleOrder = randperm(params.training);
@@ -32,9 +32,9 @@ function t = trainNetwork(params)
 
 		%3_ BACKPROP
 		for i = 1:params.training
-		    answer = backPropagation(params, w, i, trainingInput, eta, alpha, varOld);
-		    w = answer.wNew;
-		    varOld = answer.varW;
+		    answer = backPropagation(params, w, i, trainingInput, eta, alpha, oldVarW);
+		    w = answer.newW;
+		    oldVarW = answer.newVarW;
 		end
 
 		%4_ Run all patterns with last w and calculate the error for each one

@@ -1,8 +1,8 @@
-function ans = backPropagation(params, wOld, i, trainingInput, eta, alpha, varOld)
+function ans = backPropagation(params, oldW, i, trainingInput, eta, alpha, oldVarW)
 
 	% 2_ Aplicar el pattern a la capa de entrada
 	% 3_ Y propagar la salida hacia adelante
-	trainingOutput = runPattern(params, wOld, trainingInput(:,i));
+	trainingOutput = runPattern(params, oldW, trainingInput(:,i));
 
 	delta = struct();
 
@@ -18,7 +18,7 @@ function ans = backPropagation(params, wOld, i, trainingInput, eta, alpha, varOl
     for i = (params.layers):-1:2
     	H = trainingOutput.H.(num2str(i-1));
     	% Transpongo para poder multiplicar con delta
-        w = wOld.(num2str(i))';
+        w = oldW.(num2str(i))';
         % Delta calculado en paso previo
         prevDelta = delta.(num2str(i));
         % Agrego -1 que seria la entrada a la unidad umbral.
@@ -28,17 +28,22 @@ function ans = backPropagation(params, wOld, i, trainingInput, eta, alpha, varOl
     end
 
     % 6_ Actualizar todas las conexiones
-    wNew = struct();
-    varW = struct();
+    newW = struct();
+    newVarW = struct();
     for i = (params.layers):-1:1
         % Calculo variacion de conexiones
         % Ignoro el ultimo elemento que corresponde al umbral
-        varW.(num2str(i))  = eta .* delta.(num2str(i))(1:end-1) * [trainingOutput.V.(num2str(i-1));-1]';
+        varWAux  = eta .* delta.(num2str(i))(1:end-1) * [trainingOutput.V.(num2str(i-1));-1]';
+
+        % Momentum: Termino que pesa el descenso promedio
+        % Si alpha vale 0 no tendra efecto
+        newVarW.(num2str(i)) = varWAux + (alpha .* oldVarW.(num2str(i)));
+
         % Nueva conexion = Conexion anterior + variacion
-        wNew.(num2str(i)) = wOld.(num2str(i)) + varW.(num2str(i));
+        newW.(num2str(i)) = oldW.(num2str(i)) + newVarW.(num2str(i));
     end
 
-    ans.varW = varW;
-    ans.wNew = wNew;
+    ans.newVarW = newVarW;
+    ans.newW = newW;
 
 end
