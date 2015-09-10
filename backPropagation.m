@@ -1,4 +1,4 @@
-function ans = backPropagation(params, wOld, i, trainingInput, eta, alpha)
+function ans = backPropagation(params, wOld, i, trainingInput, eta, alpha, varOld)
 
 	% 2_ Aplicar el pattern a la capa de entrada
 	% 3_ Y propagar la salida hacia adelante

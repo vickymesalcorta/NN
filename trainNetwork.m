@@ -11,9 +11,10 @@ function t = trainNetwork(params)
 	eta = params.eta;
 	badSteps = 0;
 
-	wOld = struct ();
-	for layer = 1:params.layers
-		wOld.(num2str(layer)) = zeros(size(params.w.(num2str(layer))));
+	% Empiezo con variacion 0
+	varOld = struct ();
+	for i = 1:params.layers
+	    varOld.(num2str(i)) = zeros(size(params.w.(num2str(i))));
 	end
 
     % 1_ SHUFFLE PATTERNS (input and expected) with the same order
@@ -23,18 +24,15 @@ function t = trainNetwork(params)
 
     % 2_ ADD NOISE after badSteps to avoid localMin
     if badSteps >= params.maxBadSteps
-    	w = addNoise(params);
+    	w = addNoise(w);
     	badSteps = 0;
 	end
 
 	%3_ BACKPROP
      totalError = [];
-	 for i = 1:size(params.training)
-
-	    answer = backPropagation(params, w, i, trainingInput, eta, alpha);
-	    % answer = backPropagation(params,i,trainingOutput,w,varOld,eta,alpha);
-	    % w = answer.w;
-	     %varOld = answer.var;          
-	%            totalError(i) = (1/2 * ((trainingExpected(:,i)-trainingOutput.V.(char('@' + params.layers+1))).^2));           
+	for i = 1:size(params.training)
+	    answer = backPropagation(params, w, i, trainingInput, eta, alpha, varOld);
+	    w = answer.wNew;
+	    varOld = answer.varW;
 	 end
 end
