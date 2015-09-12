@@ -10,6 +10,7 @@ function trainedNetwork = trainNetwork(params)
 	iter = 1;
 	badSteps = 0;
 	goodSteps = 0;
+	% Vector con error de cada iteracion
 	trainedNetwork.iterError = [];
 
 	% Esto es para usar cuando descarto un w en parametros adaptativos
@@ -90,6 +91,8 @@ function trainedNetwork = trainNetwork(params)
 	end
 
 	trainedNetwork.w = w;
+	% Error vector es el vector con los errores de cada pattern de la ultima iteracion
+	% No confundir con iterError
 	trainedNetwork.errorVector = errorVector;
     trainedNetwork.eta = eta;
 	trainedNetwork.iter = iter;
