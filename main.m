@@ -11,6 +11,7 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     gBeta = 1;
     params.maxEpocs = 1000;
     params.maxBadSteps = 10;
+    params.useNoise = 0;
     params.noise = 0.0001;
     % 441 patterns totales, uso menos para poder debuggear
     params.patterns = 10;

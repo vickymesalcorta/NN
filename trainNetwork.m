@@ -32,7 +32,7 @@ function trainedNetwork = trainNetwork(params)
 	    trainingExpected = shufflePatterns(shuffleOrder, params.trainingExpected);
 
 	    % 2_ ADD NOISE after badSteps to avoid localMin
-	    if badSteps >= params.maxBadSteps
+	    if params.useNoise == 1 && badSteps >= params.maxBadSteps
 	    	w = addNoise(w);
 	    	badSteps = 0;
 		end
