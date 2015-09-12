@@ -54,6 +54,8 @@ function trainedNetwork = trainNetwork(params)
 	    meanError = mean(errorVector);
 	    trainedNetwork.iterError(iter) = meanError;
 
+	    disp('error: ');
+	    disp(meanError);
 	    % PREGUNTAR:
 	    % En parametros adaptativos, se incrementa luego de K pasos buenos.
 	    % Como hay que decrementar? Despues de UN paso malo? o despues de K pasos malos?
