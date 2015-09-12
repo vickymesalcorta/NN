@@ -38,7 +38,7 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     disp('Finalizo luego de epocas: ');
     disp(trainedNetwork.epocs);
     disp('con un error de: ');
-    disp(trainedNetwork.iterError(trainedNetwork.iter-1));
+    disp(trainedNetwork.iterError(trainedNetwork.iter));
     disp('el eta vale: ');
     disp(trainedNetwork.eta);
 

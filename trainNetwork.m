@@ -24,7 +24,7 @@ function trainedNetwork = trainNetwork(params)
 	end
 
 	% Lazy and because we only care the error
-    while meanError > params.expError &&  epocs < params.maxEpocs
+    while meanError > params.expError &&  epocs <= params.maxEpocs
 
 	    % 1_ SHUFFLE PATTERNS (input and expected) with the same order
 	    shuffleOrder = randperm(params.training);
@@ -97,6 +97,6 @@ function trainedNetwork = trainNetwork(params)
 	% No confundir con iterError
 	trainedNetwork.errorVector = errorVector;
     trainedNetwork.eta = eta;
-	trainedNetwork.iter = iter;
-    trainedNetwork.epocs = epocs;
+	trainedNetwork.iter = iter-1;
+    trainedNetwork.epocs = epocs-1;
 end
