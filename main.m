@@ -9,7 +9,7 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     % maxEpocs
     % noise
     gBeta = 1;
-    params.maxEpocs = 1000;
+    params.maxEpocs = 10;
     params.maxBadSteps = 10;
     params.useNoise = 0;
     params.noise = 0.0001;
@@ -38,7 +38,7 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     disp('Finalizo luego de epocas: ');
     disp(trainedNetwork.epocs);
     disp('con un error de: ');
-    disp(trainedNetwork.error(trainedNetwork.iter-1));
+    disp(trainedNetwork.iterError(trainedNetwork.iter-1));
     disp('el eta vale: ');
     disp(trainedNetwork.eta);
 
