@@ -9,13 +9,14 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     % maxEpocs
     % noise
     gBeta = 1;
-    params.maxEpocs = 10;
+    params.maxEpocs = 1000;
+    % cada cuantos pasos se pone ruido
     params.maxBadSteps = 10;
     params.useNoise = 0;
     params.noise = 0.0001;
     % 441 patterns totales, uso menos para poder debuggear
-    params.patterns = 10;
-    params.training = 8;  
+    params.patterns = 900;
+    params.training = 300;  
     % END_DEFINES
 
     params.test = params.patterns - params.training;
@@ -30,7 +31,9 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     params.layers = size(arq, 2) - 1;
     % Load weights, patterns and activation function
     params.w = initWeights(arq);
-    params = loadPatterns(params);
+    
+    %PASAR POR PARAMETRO N Y SIZE
+    params = loadPatterns(params,orderTemporalSerie(2,1000));
     params = loadActivationFunction(params, actFunct, gBeta);
 
     trainedNetwork = trainNetwork(params);

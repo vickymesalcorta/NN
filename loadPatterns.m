@@ -1,11 +1,10 @@
-function p = loadPatterns(params)
+function p = loadPatterns(params,x)
 
 	% TODO VER QUE HAY EN ORDERED SAMPLES.
 	% NO SE COMO CREAR DESDE OCTAVE ESE ARCHIVO
 	% A ESE LO CREAMOS CUANDO TENIA MATLAB
 	% POR AHORA LO USO PARA NO PERDER TIEMPO EN ESO
-	load('orderedSamples.mat');
-
+	
 	params.trainingInput = zeros(2, params.training);
 	params.trainingInput = x(1:params.training,1:2)';
 
