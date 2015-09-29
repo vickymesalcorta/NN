@@ -1,7 +1,10 @@
-function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep, arq)
-
-    %load all the parameters in a structure
-
+function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep, arq, n)
+    
+    % n is the ammount of previous values we are taking into account to
+    % predic the next one
+    
+    % load all the parameters in a structure
+    m = []
     % DEFINES:
     % params.patterns: cantidad de patterns totales
     % params.training: cantidad de pattern para entrenar
@@ -11,12 +14,12 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     gBeta = 1;
     params.maxEpocs = 1000;
     % cada cuantos pasos se pone ruido
-    params.maxBadSteps = 10;
-    params.useNoise = 0;
-    params.noise = 0.0001;
+    params.maxBadSteps = 8;
+    params.useNoise = 1;
+    params.noise = 0.01;
     % 441 patterns totales, uso menos para poder debuggear
-    params.patterns = 900;
-    params.training = 300;  
+    params.patterns = 1000;
+    params.training = 800;  
     % END_DEFINES
 
     params.test = params.patterns - params.training;
@@ -32,12 +35,13 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     % Load weights, patterns and activation function
     params.w = initWeights(arq);
     
-    %PASAR POR PARAMETRO N Y SIZE
-    params = loadPatterns(params,orderTemporalSerie(2,1000));
+    params = loadPatterns(params,n,actFunct);
     params = loadActivationFunction(params, actFunct, gBeta);
-
+    
     trainedNetwork = trainNetwork(params);
 
+    m = [m trainedNetwork]
+    
     disp('Finalizo luego de epocas: ');
     disp(trainedNetwork.epocs);
     disp('con un error de: ');

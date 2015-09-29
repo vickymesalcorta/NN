@@ -12,13 +12,14 @@ function trainedNetwork = trainNetwork(params)
 	goodSteps = 0;
 	% Vector con error de cada iteracion
 	trainedNetwork.iterError = [];
-
+  
 	% Esto es para usar cuando descarto un w en parametros adaptativos
 	lastW = w;
 	lastErrorVector = ones(params.training);
 
 	% Empiezo con variacion 0
 	varW = struct ();
+    
 	for i = 1:params.layers
 	    varW.(num2char(i)) = zeros(size(params.w.(num2char(i))));
 	end
@@ -33,16 +34,18 @@ function trainedNetwork = trainNetwork(params)
 
 	    % 2_ ADD NOISE after badSteps to avoid localMin
 	    if params.useNoise == 1 && badSteps >= params.maxBadSteps
-	    	w = addNoise(w);
+            w = addNoise(w,params);
 	    	badSteps = 0;
+            disp('noise added')
 		end
 
 		%3_ BACKPROP
-		for i = 1:params.training
-		    answer = backPropagation(params, w, i, trainingInput, eta, alpha, varW);
-		    w = answer.newW;
-		    varW = answer.newVarW;
-		end
+        for i = 1:params.training
+            answer = backPropagation(params, w, i, trainingInput, eta, alpha, varW);
+            w = answer.newW;
+            varW = answer.newVarW;
+        end
+        % end
 
 		%4_ Run all patterns with last w and calculate the error for each one
 		errorVector = [];
@@ -55,14 +58,11 @@ function trainedNetwork = trainNetwork(params)
 	    trainedNetwork.iterError(iter) = meanError;
 	    disp('error: ');
 	    disp(meanError);
-        
-
-
+       
 	    % GRAFICO DE EXPLORACIÓN DE LOS ERRORES
         plot(trainedNetwork.iterError);
-       % drawnow
+        % drawnow
    		hold on
-
    		%
 
 

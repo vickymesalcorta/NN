@@ -15,7 +15,7 @@ function trainingOutput = runPattern(params, w, xi)
 	   h = w.(num2char(layer)) * [v; -1];
 	   H.(num2char(layer)) = h;
 	   v = params.g(h);
-	   V.(num2char(layer)) = v;	   
+	   V.(num2char(layer)) = v;  
 	end
 
 	trainingOutput.V = V;

@@ -12,6 +12,5 @@ function x = orderTemporalSerie(n,size)
        for j = 0:n
             x(i,j+1) = m(1,j+i);
        end
-    end
-    
+    end  
 end
