@@ -12,7 +12,7 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     % maxEpocs
     % noise
     gBeta = 1;
-    params.maxEpocs = 1000;
+    params.maxEpocs = 300;
     % cada cuantos pasos se pone ruido
     params.maxBadSteps = 8;
     params.useNoise = 1;
