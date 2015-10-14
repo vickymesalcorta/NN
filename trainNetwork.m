@@ -51,7 +51,7 @@ function trainedNetwork = trainNetwork(params)
 		errorVector = [];
 	    for i = 1:params.training
 	        output = runPattern(params, w, trainingInput(:,i));
-	        errorVector(i) = 1/2 * ((trainingExpected(:,i) - output.V.(num2char(params.layers))) .^2);
+            errorVector(i) = ((trainingExpected(:,i) - output.V.(num2char(params.layers))) ^2);
 	    end
 	    % error after all imputs used once        
 	    meanError = mean(errorVector);
