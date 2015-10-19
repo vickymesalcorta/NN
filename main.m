@@ -9,13 +9,13 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     % maxEpocs
     % noise
     gBeta = 1;
-    params.maxEpocs = 10;
+    params.maxEpocs = 500;
     params.maxBadSteps = 10;
     params.useNoise = 0;
     params.noise = 0.0001;
     % 441 patterns totales, uso menos para poder debuggear
-    params.patterns = 10;
-    params.training = 8;  
+    params.patterns = 440;
+    params.training = 300;  
     % END_DEFINES
 
     params.test = params.patterns - params.training;
@@ -42,5 +42,8 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     disp('el eta vale: ');
     disp(trainedNetwork.eta);
 
+    
+    m.trainedNetwork = trainedNetwork;
+    m.params = params;
     % Agregar porcentajes de acierto etc.
 end

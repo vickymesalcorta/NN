@@ -21,7 +21,15 @@ function trainedNetwork = trainNetwork(params)
 	varW = struct ();
 	for i = 1:params.layers
 	    varW.(num2char(i)) = zeros(size(params.w.(num2char(i))));
-	end
+    end
+    
+    
+    %Para graficar como se va adaptando la función a la esperada
+    figure;
+    hold on; 
+    x = linspace(0,params.training,params.training);
+    h_old = plot(0,0);
+    %end
 
 	% Lazy and because we only care the error
     while meanError > params.expError &&  epocs <= params.maxEpocs
@@ -48,14 +56,14 @@ function trainedNetwork = trainNetwork(params)
 		errorVector = [];
 	    for i = 1:params.training
 	        output = runPattern(params, w, trainingInput(:,i));
-	        errorVector(i) = 1/2 * ((trainingExpected(:,i) - output.V.(num2char(params.layers))) .^2);
+            val = output.V.(num2char(params.layers));
+            result(i) = val;
+	        errorVector(i) = 1/2 * ((trainingExpected(:,i) - val) .^2);
 	    end
 	    % error after all imputs used once        
 	    meanError = mean(errorVector);
 	    trainedNetwork.iterError(iter) = meanError;
 
-	    disp('error: ');
-	    disp(meanError);
 	    % PREGUNTAR:
 	    % En parametros adaptativos, se incrementa luego de K pasos buenos.
 	    % Como hay que decrementar? Despues de UN paso malo? o despues de K pasos malos?
@@ -63,6 +71,19 @@ function trainedNetwork = trainNetwork(params)
 	    if params.adaptStep > 0 && iter >= 2
 	    	if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
 	    		% Paso bueno
+                
+                  % GRAFICO LA FUNCION APROXIMADA A VECES
+                disp('PASO BUENO');
+                trainedNetwork.iterError(iter)
+                
+                    h = plot(x,trainingExpected,x,result);
+                    delete(h_old);
+                    h_old = h;
+                    drawnow;
+                
+                % end
+                
+                
 	    		alpha = params.alpha;
 	    		badSteps = 0;
 	    		goodSteps = goodSteps + 1;
@@ -76,6 +97,10 @@ function trainedNetwork = trainNetwork(params)
 				end
 	    	else
 	    		% Paso malo
+                
+                 disp('PASO MALO');
+                trainedNetwork.iterError(iter)
+                
 	    		alpha = 0;
     			badSteps = badSteps + 1;
     			goodSteps = 0;
@@ -99,4 +124,16 @@ function trainedNetwork = trainNetwork(params)
     trainedNetwork.eta = eta;
 	trainedNetwork.iter = iter-1;
     trainedNetwork.epocs = epocs-1;
+    trainedNetwork.result = result;
+    
+    trainedNetwork.test = runTest(params,params.w);    
+    x = linspace(0,size(trainedNetwork.test.result,2),size(trainedNetwork.test.result,2));
+    
+    trainedNetwork.test.result
+    params.testExpected
+    
+    h = plot(x,trainedNetwork.test.result,x,params.testExpected);
+    delete(h_old);
+    h_old = h;
+    drawnow;
 end
