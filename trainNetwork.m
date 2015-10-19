@@ -22,7 +22,14 @@ function trainedNetwork = trainNetwork(params)
     
 	for i = 1:params.layers
 	    varW.(num2char(i)) = zeros(size(params.w.(num2char(i))));
-	end
+    end
+    
+    %Para graficar como se va adaptando la funci�n a la esperada
+    figure;
+    hold on; 
+    x = linspace(0,params.training,params.training);
+    h_old = plot(0,0);
+    %end
 
 	% Lazy and because we only care the error
     while meanError > params.expError &&  epocs <= params.maxEpocs
@@ -44,6 +51,7 @@ function trainedNetwork = trainNetwork(params)
             answer = backPropagation(params, w, i, trainingInput, eta, alpha, varW);
             w = answer.newW;
             varW = answer.newVarW;
+            result(i) = answer.V;
         end
         % end
 
@@ -51,18 +59,17 @@ function trainedNetwork = trainNetwork(params)
 		errorVector = [];
 	    for i = 1:params.training
 	        output = runPattern(params, w, trainingInput(:,i));
-            errorVector(i) = ((trainingExpected(:,i) - output.V.(num2char(params.layers))) ^2);
+            var = output.V.(num2char(params.layers));
+            errorVector(i) = ((trainingExpected(:,i) - var ) ^2);
 	    end
 	    % error after all imputs used once        
 	    meanError = mean(errorVector);
 	    trainedNetwork.iterError(iter) = meanError;
-	    disp('error: ');
-	    disp(meanError);
-       
-	    % GRAFICO DE EXPLORACIÓN DE LOS ERRORES
-        plot(trainedNetwork.iterError);
-        % drawnow
-   		hold on
+	    
+	    %GRAFICO DE EXPLORACIÓN DE LOS ERRORES
+        %plot(trainedNetwork.iterError);
+        %drawnow
+   		%hold on
    		%
 
 
@@ -74,6 +81,17 @@ function trainedNetwork = trainNetwork(params)
 	    if params.adaptStep > 0 && iter >= 2
 	    	if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
 	    		% Paso bueno
+                disp('PASO BUENO');
+                disp('error: ');
+                disp(meanError);
+                % GRAFICO LA FUNCION APROXIMADA A VECES
+%                 h = plot(x,trainingExpected,x,result);
+%                 delete(h_old);
+%                 h_old = h;
+%                 drawnow;
+                % end
+                
+                
 	    		alpha = params.alpha;
 	    		badSteps = 0;
 	    		goodSteps = goodSteps + 1;
@@ -110,4 +128,16 @@ function trainedNetwork = trainNetwork(params)
     trainedNetwork.eta = eta;
 	trainedNetwork.iter = iter-1;
     trainedNetwork.epocs = epocs-1;
+     
+    trainedNetwork.test = runTest(params,trainedNetwork.w);    
+    
+    % GRAFICO LA FUNCION APROXIMADA A VECES
+    plot(x,trainingExpected,x,result);
+    drawnow;
+    % end
+    
+    x = linspace(0,size(trainedNetwork.test.result,2),size(trainedNetwork.test.result,2));
+    figure;
+    plot(x,trainedNetwork.test.result,x,params.testExpected);
+    drawnow;
 end

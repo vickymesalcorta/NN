@@ -14,12 +14,29 @@ function p = loadPatterns(params,n,actFunct)
 	params.trainingExpected = zeros(1, params.training);
 	params.trainingExpected = x(1:params.training,n+1)';
     
-	params.testInput = zeros(n, params.test);
+    %PARA ENSEÑAR ELIMINO EL 90% DE LOS VALORES QUE SE ENCUENTREN EN LA
+    %FRANJA MEDIA PARA QUE NO PESEN TANTO
+    i = 1;
+    while i < params.training;
+        exp = params.trainingExpected(:,i);
+        if  exp > 0.2 && exp < 0.8
+            if rand > 0.2
+                params.trainingExpected(:,i) = [];
+                params.trainingInput(:,i)= [];
+                params.patterns = params.patterns -1;
+                params.training = params.training -1;    
+                i = i - 1;
+            end 
+        end
+        i = i + 1;
+    end
+    
+    params.testInput = zeros(n, params.test);
 	params.testInput = x(params.training+1:params.patterns-n,1:n)';
 
 	params.testExpected = zeros(1, params.test);
 	params.testExpected = x(params.training+1:params.patterns-n,n+1)';
-
+    
 	p = params;
 
 end

@@ -1,8 +1,0 @@
-1_ En parametros adaptativos, se incrementa luego de K pasos buenos. Como hay que decrementar? Despues de UN paso malo? o despues de K pasos malos?
-
-
-
-2_ Como normalizo los numeros?
-3_ Como agregamos ruido??
-4_ Como se elige un error esperado coherente?
-4_ Como se elige cantidad de params que uso para entrenar y para testear?

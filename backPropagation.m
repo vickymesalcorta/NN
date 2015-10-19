@@ -45,5 +45,5 @@ function ans = backPropagation(params, oldW, i, trainingInput, eta, alpha, oldVa
 
     ans.newVarW = newVarW;
     ans.newW = newW;
-
+    ans.V = V;
 end

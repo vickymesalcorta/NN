@@ -12,10 +12,10 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     % maxEpocs
     % noise
     gBeta = 1;
-    params.maxEpocs = 300;
+    params.maxEpocs = 500;
     % cada cuantos pasos se pone ruido
-    params.maxBadSteps = 8;
-    params.useNoise = 1;
+    params.maxBadSteps = 15;
+    params.useNoise = 0;
     params.noise = 0.01;
     % 441 patterns totales, uso menos para poder debuggear
     params.patterns = 1000;
