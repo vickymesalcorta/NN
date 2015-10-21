@@ -20,6 +20,4 @@ function trainingOutput = runPattern(params, w, xi)
 
 	trainingOutput.V = V;
 	trainingOutput.H = H;
-
-%	disp(trainingOutput);
 end

@@ -1,4 +1,4 @@
-function ans = backPropagation(params, oldW, i, trainingInput, eta, alpha, oldVarW)
+function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected, eta, alpha, oldVarW)
 
 	% 2_ Aplicar el pattern a la capa de entrada
 	% 3_ Y propagar la salida hacia adelante
@@ -7,12 +7,12 @@ function ans = backPropagation(params, oldW, i, trainingInput, eta, alpha, oldVa
 	delta = struct();
 
     % 4_ Calculo delta para la capa de salida
-    S = params.trainingExpected(:,i);
+    S = trainingExpected(:,i);
     V = trainingOutput.V.(num2char(params.layers));
     H = trainingOutput.H.(num2char(params.layers));
     % Agrego el 0 al final para que tenga al igual que los otros deltas una unidad de mas
     % que corresponde al umbral, pero sera ignorada.
-    delta.(num2char(params.layers)) = [params.gp(H) .* (S-V); 0];
+    delta.(num2char(params.layers)) = [params.gp(H)+0.1 .* (S-V); 0];
 
     % 5_ Calculo los deltas para las capas anteriores
     for i = (params.layers):-1:2
@@ -24,7 +24,7 @@ function ans = backPropagation(params, oldW, i, trainingInput, eta, alpha, oldVa
         % Agrego -1 que seria la entrada a la unidad umbral.
         % Creo que el -1 esta bien, pero preguntar por las dudas
         % Ignoro el 0 que agregue antes
-        delta.(num2char(i-1)) = [params.gp(H) ; -1] .* (w * prevDelta(1:end-1));
+        delta.(num2char(i-1)) = [params.gp(H)+0.1 ; -1] .* (w * prevDelta(1:end-1));
     end
 
     % 6_ Actualizar todas las conexiones

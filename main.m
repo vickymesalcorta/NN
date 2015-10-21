@@ -4,7 +4,7 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     % predic the next one
     
     % load all the parameters in a structure
-    m = []
+    m = [];
     % DEFINES:
     % params.patterns: cantidad de patterns totales
     % params.training: cantidad de pattern para entrenar
@@ -15,11 +15,9 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     params.maxEpocs = 500;
     % cada cuantos pasos se pone ruido
     params.maxBadSteps = 15;
-    params.useNoise = 0;
-    params.noise = 0.01;
     % 441 patterns totales, uso menos para poder debuggear
-    params.patterns = 1000;
-    params.training = 800;  
+    params.patterns = 100;
+    params.training = 50;  
     % END_DEFINES
 
     params.test = params.patterns - params.training;
@@ -30,17 +28,18 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     params.adaptDec = adaptDec;
     params.adaptStep = adaptStep;
     params.arq = arq;
+    params.n = n;
     % Ej: Arq = [2,4,5,1] layers = 3
     params.layers = size(arq, 2) - 1;
     % Load weights, patterns and activation function
     params.w = initWeights(arq);
     
-    params = loadPatterns(params,n,actFunct);
+    params = loadSenoPatterns(params,n,actFunct);
     params = loadActivationFunction(params, actFunct, gBeta);
     
     trainedNetwork = trainNetwork(params);
 
-    m = [m trainedNetwork]
+    m = [m trainedNetwork];
     
     disp('Finalizo luego de epocas: ');
     disp(trainedNetwork.epocs);

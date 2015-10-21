@@ -16,7 +16,6 @@ function trainedNetwork = trainNetwork(params)
 	% Esto es para usar cuando descarto un w en parametros adaptativos
 	lastW = w;
 	lastErrorVector = ones(params.training);
-
 	% Empiezo con variacion 0
 	varW = struct ();
     
@@ -27,75 +26,74 @@ function trainedNetwork = trainNetwork(params)
     %Para graficar como se va adaptando la función a la esperada
     figure;
     hold on; 
-    x = linspace(0,params.training,params.training);
     h_old = plot(0,0);
     %end
-
+    
+    
+    
+    
 	% Lazy and because we only care the error
     while meanError > params.expError &&  epocs <= params.maxEpocs
 
 	    % 1_ SHUFFLE PATTERNS (input and expected) with the same order
-	    shuffleOrder = randperm(params.training);
-	    trainingInput = shufflePatterns(shuffleOrder, params.trainingInput);
-	    trainingExpected = shufflePatterns(shuffleOrder, params.trainingExpected);
+ 	    shuffleOrder = randperm(params.training);
+ 	    trainingInput = shufflePatterns(shuffleOrder, params.trainingInput);
+ 	    trainingExpected = shufflePatterns(shuffleOrder, params.trainingExpected);
+% 	    trainingInput = params.trainingInput;
+% 	    trainingExpected = params.trainingExpected;
+        
 
-	    % 2_ ADD NOISE after badSteps to avoid localMin
-	    if params.useNoise == 1 && badSteps >= params.maxBadSteps
-            w = addNoise(w,params);
-	    	badSteps = 0;
-            disp('noise added')
-		end
-
-		%3_ BACKPROP
+        %2_ BACKPROP
+        errorVector = [];
         for i = 1:params.training
-            answer = backPropagation(params, w, i, trainingInput, eta, alpha, varW);
+            answer = backPropagation(params, w, i, trainingInput , trainingExpected, eta, alpha, varW);
             w = answer.newW;
-            varW = answer.newVarW;
-            result(i) = answer.V;
+            varW = answer.newVarW; 
+            toprint(i) = answer.V;
         end
         % end
 
-		%4_ Run all patterns with last w and calculate the error for each one
-		errorVector = [];
-	    for i = 1:params.training
-	        output = runPattern(params, w, trainingInput(:,i));
-            var = output.V.(num2char(params.layers));
-            errorVector(i) = ((trainingExpected(:,i) - var ) ^2);
-	    end
-	    % error after all imputs used once        
-	    meanError = mean(errorVector);
-	    trainedNetwork.iterError(iter) = meanError;
+	    % Test error after all inputs used once 
+        test = runTest(params,w);    
+        trainedNetwork.iterError(iter) = test.meanError;   
+     
+        if mod(epocs,10) == 0   
+              x = linspace(0,size(toprint,2),size(toprint,2));
+              h = plot(x,trainingExpected,x,toprint);
+              delete(h_old);
+              h_old = h;
+              drawnow;
+        end
+
+   
+        % GRAFICO EL OUTPUT DEL TEST VS EL ESPERADO DEL TEST
+%          if mod(epocs,2) == 0   
+%              x = linspace(0,size(test.result,2),size(test.result,2));
+%              h = plot(x,test.result,x,params.testExpected);
+%              delete(h_old);
+%              h_old = h;
+%              drawnow;
+%          end
+        % END
 	    
-	    %GRAFICO DE EXPLORACIÃ“N DE LOS ERRORES
-        %plot(trainedNetwork.iterError);
-        %drawnow
-   		%hold on
-   		%
-
-
-        
-	    % PREGUNTAR:
-	    % En parametros adaptativos, se incrementa luego de K pasos buenos.
-	    % Como hay que decrementar? Despues de UN paso malo? o despues de K pasos malos?
+   		
 	    % PARAMETROS ADAPTATIVOS con adaptStep > 0
-	    if params.adaptStep > 0 && iter >= 2
+	    if(params.adaptStep > 0 && iter >= 2)
 	    	if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
 	    		% Paso bueno
                 disp('PASO BUENO');
-                disp('error: ');
-                disp(meanError);
-                % GRAFICO LA FUNCION APROXIMADA A VECES
-%                 h = plot(x,trainingExpected,x,result);
-%                 delete(h_old);
-%                 h_old = h;
-%                 drawnow;
-                % end
-                
-                
-	    		alpha = params.alpha;
+                        disp('error: ');
+        disp(trainedNetwork.iterError(iter));
+        disp('EPOCA');
+        disp(epocs);
+         disp('ETA');
+         disp(eta);
+         
+                alpha = params.alpha;
 	    		badSteps = 0;
 	    		goodSteps = goodSteps + 1;
 				% Si es un paso bueno, marco este nuevo peso como el ultimo valido
+                lastLastW = lastW;
 				lastW = w;
 				lastErrorVector = errorVector;
 				% Desp de adaptStep modificar eta
@@ -105,18 +103,26 @@ function trainedNetwork = trainNetwork(params)
 				end
 	    	else
 	    		% Paso malo
+                disp('PASO MALO');
+                
 	    		alpha = 0;
     			badSteps = badSteps + 1;
     			goodSteps = 0;
-    			% esta bien? o tengo que hacer esto luego de adaptStep malos?
     			eta = (1-params.adaptDec) * eta;
     			iter = iter-1;
-    			% Si es un paso malo, tiro los pesos y vuelvo al anterior
+    			
+                % Si es un paso malo, tiro los pesos y vuelvo al anterior
     			w = lastW;
+                lastW = lastLastW;
     			errorVector = lastErrorVector;
-	    	end
+            end
+        else
+           lastLastW = lastW;
+           lastW = w;
 	   	end
+    
 
+        
         iter = iter + 1;
         epocs = epocs + 1;
 	end
@@ -129,15 +135,6 @@ function trainedNetwork = trainNetwork(params)
 	trainedNetwork.iter = iter-1;
     trainedNetwork.epocs = epocs-1;
      
-    trainedNetwork.test = runTest(params,trainedNetwork.w);    
     
-    % GRAFICO LA FUNCION APROXIMADA A VECES
-    plot(x,trainingExpected,x,result);
-    drawnow;
-    % end
     
-    x = linspace(0,size(trainedNetwork.test.result,2),size(trainedNetwork.test.result,2));
-    figure;
-    plot(x,trainedNetwork.test.result,x,params.testExpected);
-    drawnow;
 end
