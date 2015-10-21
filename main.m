@@ -17,7 +17,7 @@ function m = main(actFunct, expError, eta, alpha, adaptInc, adaptDec, adaptStep,
     params.maxBadSteps = 15;
     % 441 patterns totales, uso menos para poder debuggear
     params.patterns = 100;
-    params.training = 50;  
+    params.training = 55;  
     % END_DEFINES
 
     params.test = params.patterns - params.training;

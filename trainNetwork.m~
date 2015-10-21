@@ -93,7 +93,7 @@ function trainedNetwork = trainNetwork(params)
                 % disp('ETA');
                 % disp(eta);
          
-    %            alpha = params.alpha;
+                alpha = params.alpha;
   	    		badSteps = 0;
   	    		goodSteps = goodSteps + 1;
 % 				% Si es un paso bueno, marco este nuevo peso como el ultimo valido
@@ -109,10 +109,10 @@ function trainedNetwork = trainNetwork(params)
 
 	    	else
 	    		% Paso malo   
- 	 %   		alpha = 0;
+ 	    		alpha = 0;
       			badSteps = badSteps + 1;
      			goodSteps = 0;
-%        			eta = (1-params.adaptDec) * eta;
+       			eta = (1-params.adaptDec) * eta;
      			iter = iter-1;
 %     			
 %               % Si es un paso malo, tiro los pesos y vuelvo al anterior
