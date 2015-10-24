@@ -18,9 +18,8 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
     % Agrego el 0 al final para que tenga al igual que los otros deltas una unidad de mas
     % que corresponde al umbral, pero sera ignorada.
 
-%     delta{params.layers} = [(params.gp(H)+0.1) .* (S-V); 0];
-    delta{params.layers} = [(params.gp(H)) .* (S-V); 0];
-
+    delta{params.layers} = [(params.gp(H)+0.1) .* (S-V); 0];
+    
     % 5_ Calculo los deltas para las capas anteriores
     for i = (params.layers):-1:2
     	H = trainingOutput{1}(i-1);
@@ -32,8 +31,7 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
         % Agrego -1 que seria la entrada a la unidad umbral.
         % Creo que el -1 esta bien, pero preguntar por las dudas
         % Ignoro el 0 que agregue antes        
-%         delta{i-1} = [params.gp(H{1}) ; -1] + 0.1 .* (w * prevDelta);
-        delta{i-1} = [params.gp(H{1}) ; -1] .* (w * prevDelta);
+        delta{i-1} = [params.gp(H{1}) + 0.1 ; -1]  .* (w * prevDelta);
         
     end
 
