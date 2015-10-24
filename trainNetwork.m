@@ -4,9 +4,16 @@ function trainedNetwork = trainNetwork(params)
 	trainedNetwork = struct();
     
 	w = params.w;
+    w = cell(2);
+    w{1} = [0.2 0.3 0.22 ; 0.5 0.25 0.35];
+    w{2} = [0.5 0.20 0.35];
+    
+    
 	alpha = params.alpha;
 	eta = params.eta;
 	meanError = 1;
+    badSteps = 0;
+    goodSteps = 0;
 	epocs = 1;
 	iter = 1;
 	
@@ -20,7 +27,7 @@ function trainedNetwork = trainNetwork(params)
 	
     varW = cell(params.layers);
 	for i = 1:params.layers
-	    varW{i}= zeros(size(params.w{i}));
+	    varW{i}= zeros(size(w{i}));
     end
     
     %Para graficar como se va adaptando la función a la esperada
@@ -38,6 +45,10 @@ function trainedNetwork = trainNetwork(params)
   	    trainingInput = shufflePatterns(shuffleOrder, params.trainingInput);
   	    trainingExpected = shufflePatterns(shuffleOrder, params.trainingExpected);
         
+        
+        trainingInput = [0.3 0.7]';
+        trainingExpected = [0.84147];
+        
         %2_ BACKPROP
         errorVector = [];
         for i = 1:params.training
@@ -45,50 +56,41 @@ function trainedNetwork = trainNetwork(params)
             w = answer.newW;
             varW = answer.newVarW; 
         end
-
         test = runTest(params,w);    
         trainedNetwork.iterError(iter) = test.meanError;   
 
 	    if(iter >= 2)
 	    	if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
 	    		% Paso bueno
-                if mod(epocs,2) == 0   
-                  x = linspace(0,size(toprint,2),size(toprint,2));
-                  h = plot(x,trainingExpected,x,toprint);
-                  delete(h_old);
-                  h_old = h;
-                  drawnow;
-                end
-           
                 disp('PASO BUENO');
                 disp('error: ');
                 disp(trainedNetwork.iterError(iter));
                 
-  	    		badSteps = 0;
-  	    		goodSteps = goodSteps + 1;
-                
-                %ROLLBACK
-                
-% 				% Si es un paso bueno, marco este nuevo peso como el ultimo valido
-               % lastW = w;
-               % lastErrorVector = errorVector;
-                
+                if mod(epocs,2) == 0   
+                      x = linspace(0,size(test.result,2),size(test.result,2));
+                      h = plot(x,test.result,x,params.testExpected);
+                      delete(h_old);
+                      h_old = h;
+                      drawnow;
+                end
+           
+                badSteps = 0;
+                goodSteps = goodSteps + 1;
+                lastW = w;
+                lastErrorVector = errorVector;
 
-	    	else
-	    		% Paso malo   
+            else
                 
-      			badSteps = badSteps + 1;
-     			goodSteps = 0;
-     			iter = iter-1;
-%     			
-%               % Si es un paso malo, tiro los pesos y vuelvo al anterior
-       %         w = lastW;
-       %         lastW = lastW;
-        %        errorVector = lastErrorVector;
+	    	%Paso malo      
+            badSteps = badSteps + 1;
+            goodSteps = 0;
+            iter = iter-1;	
+            
+            % Si es un paso malo, tiro los pesos y vuelvo al anterior
+            w = lastW;
+            errorVector = lastErrorVector;
+            
             end
-        else
-         %  lastLastW = lastW;
-          % lastW = w;
         end  
         iter = iter + 1;
         epocs = epocs + 1;

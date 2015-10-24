@@ -8,11 +8,9 @@ function trainingOutput = runPattern(params, w, xi)
 	v = xi;
 	% cell with input of current layers after g(h)
 	V = cell(params.layers);
-	V{1} = v;
 	% cell with outputs of current layer
 	H = cell(params.layers);
-	H{1} = v;
-     
+	
 	for layer = 1:params.layers
 	   h = w{layer} * [v; -1];
  	   H{layer} = h;
@@ -20,6 +18,10 @@ function trainingOutput = runPattern(params, w, xi)
  	   V{layer} = v;  
     end
    
- 	trainingOutput{1} = V;
-	trainingOutput{2} = H;
+    % H es 1, V es 2
+	trainingOutput{1} = H;
+    trainingOutput{2} = V;
+    % Como no podemos usar el índice 0, devuelvo el V0=H0 en trainingOutput{3}
+    trainingOutput{3} = xi;
+    
 end

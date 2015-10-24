@@ -3,7 +3,8 @@ function p = loadSenoPatterns(params,n)
 
     x = load('seno.mat');
     x = x.ans;
-    
+    x = normalize(x,1);
+
 %     ACA VA LA NORMALIZACIÓN CUANDO LA USEMOS
     
 	params.trainingInput = zeros(n, params.training);

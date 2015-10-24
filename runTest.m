@@ -1,12 +1,12 @@
 function ans = runTest(params, w)
 
-	testSize = params.patterns - params.training - params.n;
+	testSize = params.patterns - params.training -1;
 	errorVector = [];
     
 	for i=1:testSize
 		output = runPattern(params, w, params.testInput(:,i));
-		val = output.V.(num2char(params.layers));
-        result(i) = val;
+		val = output{2}(params.layers);
+        result(i) = val{1};
 		errorVector(i) = ((params.testExpected(:,i) - result(i)) ^2);
 	end
 
