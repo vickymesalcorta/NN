@@ -6,6 +6,7 @@ function trainingOutput = runPattern(params, w, xi)
 
 	% Entry for current layer
 	v = xi;
+    
 	% cell with input of current layers after g(h)
 	V = cell(params.layers);
 	% cell with outputs of current layer

@@ -1,4 +1,4 @@
-function m = main(actFunct, eta, alpha, arq, epocs, training)
+function m = main(actFunct, eta, alpha, arq, epocs, training,n)
     
     % n is the ammount of previous values we are taking into account to
     % predic the next one
@@ -16,8 +16,8 @@ function m = main(actFunct, eta, alpha, arq, epocs, training)
     % cada cuantos pasos se pone ruido
     params.maxBadSteps = 15;
     % 441 patterns totales, uso menos para poder debuggear
-    params.patterns = 500;
-    params.training = 100;  
+    params.patterns = 1000;
+    params.training = training;  
     % END_DEFINES
     params.test = params.patterns - params.training;
     params.eta = eta;
@@ -28,7 +28,7 @@ function m = main(actFunct, eta, alpha, arq, epocs, training)
     % Load weights, patterns and activation function
     params.w = initWeights(arq);
     
-    params = loadSenoPatterns(params,1);
+    params = loadPatterns(params,n,actFunct);
     
     % FALTA TESTEAR
     params = loadActivationFunction(params, actFunct, gBeta);

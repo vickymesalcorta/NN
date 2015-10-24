@@ -6,7 +6,7 @@ function trainedNetwork = trainNetwork(params)
 	w = params.w;
 	alpha = params.alpha;
 	eta = params.eta;
-	meanError = 1;
+% 	meanError = 1;
     badSteps = 0;
     goodSteps = 0;
 	epocs = 1;
@@ -51,7 +51,6 @@ function trainedNetwork = trainNetwork(params)
         %test = runTest(params,w);    
         %trainedNetwork.iterError(iter) = test.meanError;   
         
-        errorVector = [];
 	    for i = 1:params.training
 	        output = runPattern(params, w, trainingInput(:,i));
             var = output{2}(params.layers);
