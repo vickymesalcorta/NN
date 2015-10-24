@@ -1,23 +1,25 @@
+% TESTEADA OK
+
 function trainingOutput = runPattern(params, w, xi)
 
-	trainingOutput = struct();
+	trainingOutput = cell(2);
 
 	% Entry for current layer
 	v = xi;
-	% struct with input of current layers after g(h)
-	V = struct();
-	V.(num2char(0)) = v;
-	% struct with outputs of current layer
-	H = struct();
-	H.(num2char(0)) = v;
-
+	% cell with input of current layers after g(h)
+	V = cell(params.layers);
+	V{1} = v;
+	% cell with outputs of current layer
+	H = cell(params.layers);
+	H{1} = v;
+     
 	for layer = 1:params.layers
-	   h = w.(num2char(layer)) * [v; -1];
-	   H.(num2char(layer)) = h;
+	   h = w{layer} * [v; -1];
+ 	   H{layer} = h;
 	   v = params.g(h);
-	   V.(num2char(layer)) = v;  
-	end
-
-	trainingOutput.V = V;
-	trainingOutput.H = H;
+ 	   V{layer} = v;  
+    end
+   
+ 	trainingOutput{1} = V;
+	trainingOutput{2} = H;
 end

@@ -1,13 +1,10 @@
-function p = loadSenoPatterns(params,n,actFunct)
+%OK. TESTEADA
+function p = loadSenoPatterns(params,n)
 
-	% TODO VER QUE HAY EN ORDERED SAMPLES.
-	% NO SE COMO CREAR DESDE OCTAVE ESE ARCHIVO
-	% A ESE LO CREAMOS CUANDO TENIA MATLAB
-	% POR AHORA LO USO PARA NO PERDER TIEMPO EN ESO
-    
-    
     x = load('seno.mat');
     x = x.ans;
+    
+%     ACA VA LA NORMALIZACIÓN CUANDO LA USEMOS
     
 	params.trainingInput = zeros(n, params.training);
 	params.trainingInput = x(1:params.training,1:n)';

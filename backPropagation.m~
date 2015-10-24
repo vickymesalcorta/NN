@@ -40,7 +40,10 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
     for i = (params.layers):-1:1
         % Calculo variacion de conexiones
         % Ignoro el ultimo elemento que corresponde al umbral
-        varWAux  = eta .* delta{i}(1:end-1) * [trainingOutput{2}(i-1);-1]';
+        
+        prevDelta = delta{i}(1:end-1);
+        
+        varWAux  = eta .* prevDelta * [trainingOutput{2}(i-1);-1]';
 
         % Momentum: Termino que pesa el descenso promedio
         % Si alpha vale 0 no tendra efecto
