@@ -61,7 +61,7 @@ function trainedNetwork = trainNetwork(params)
 	    trainedNetwork.iterError(iter) = meanError;
         
 
-	    if(iter >= 2)
+	    if(params.adaptStep > 0 && iter >= 2)
 	    	if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
 	    		% Paso bueno
                 disp('PASO BUENO');
@@ -86,19 +86,25 @@ function trainedNetwork = trainNetwork(params)
                 
                 badSteps = 0;
                 goodSteps = goodSteps + 1;
+                % Si es un paso bueno, marco este nuevo peso como el ultimo valido
                 lastW = w;
                 lastErrorVector = errorVector;
+                % Desp de adaptStep modificar eta
+				if goodSteps == params.adaptStep
+					eta = eta + params.adaptInc;
+					goodSteps = 0;
+				end
 
-            else
-                
-	    	%Paso malo      
-            badSteps = badSteps + 1;
-            goodSteps = 0;
-            iter = iter-1;	
-            
-            % Si es un paso malo, tiro los pesos y vuelvo al anterior
-            w = lastW;
-            errorVector = lastErrorVector;
+            else  
+                % Paso malo      
+                badSteps = badSteps + 1;
+                goodSteps = 0;
+                % Si es un paso malo, tiro los pesos y vuelvo al anterior
+                w = lastW;
+                iter = iter-1;
+                errorVector = lastErrorVector;
+                % decrementar eta
+                eta = (1-params.adaptDec) * eta;
             
             end
         end  
