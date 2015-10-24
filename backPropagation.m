@@ -5,13 +5,9 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
     
 	trainingOutput = runPattern(params, oldW, trainingInput(:,i));
     
-    
-
-	delta = cell(params.layers);
 
     % 4_ Calculo delta para la capa de salida
-    S = trainingExpected(:,i);
-    
+    S = trainingExpected(:,i);    
     H = trainingOutput{1}(params.layers);
     H = H{1};
     V = trainingOutput{2}(params.layers);
@@ -24,13 +20,6 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
 
 %     delta{params.layers} = [(params.gp(H)+0.1) .* (S-V); 0];
     delta{params.layers} = [(params.gp(H)) .* (S-V); 0];
-    
-    disp(params.gp(H));
-    disp(S);
-    disp(V);
-    
-    disp('delta');
-    disp(delta{params.layers});
 
     % 5_ Calculo los deltas para las capas anteriores
     for i = (params.layers):-1:2
@@ -45,10 +34,6 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
         % Ignoro el 0 que agregue antes        
 %         delta{i-1} = [params.gp(H{1}) ; -1] + 0.1 .* (w * prevDelta);
         delta{i-1} = [params.gp(H{1}) ; -1] .* (w * prevDelta);
-        
-        disp('delta de ');
-        disp(i-1);
-        disp(delta{i-1});
         
     end
 
@@ -67,7 +52,7 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
             o = o{1};
         end
         
- disp(o);
+%  disp(o);
         
         varWAux  = eta .* delta{i}(1:end-1) * [o;-1]';
         
@@ -83,8 +68,6 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
     end
 
     ans.newVarW = newVarW;
-    disp(newW{1});
-    disp(newW{2});
     ans.newW = newW;
     ans.V = V;
     

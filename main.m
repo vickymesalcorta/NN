@@ -16,8 +16,8 @@ function m = main(actFunct, eta, alpha, arq, epocs, training)
     % cada cuantos pasos se pone ruido
     params.maxBadSteps = 15;
     % 441 patterns totales, uso menos para poder debuggear
-    params.patterns = 1;
-    params.training = 1;  
+    params.patterns = 500;
+    params.training = 100;  
     % END_DEFINES
     params.test = params.patterns - params.training;
     params.eta = eta;
