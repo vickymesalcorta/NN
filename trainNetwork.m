@@ -106,7 +106,6 @@ function trainedNetwork = trainNetwork(params)
         epocs = epocs + 1;
 	end
 
-	trainedNetwork.w = w;
 	% Error vector es el vector con los errores de cada pattern de la ultima iteracion
 	% No confundir con iterError
 	trainedNetwork.errorVector = errorVector;
@@ -116,7 +115,7 @@ function trainedNetwork = trainNetwork(params)
     if badSteps > 0
         w = lastW;
     end
-    
+    trainedNetwork.w = w;
     
     trainedNetwork.test = runTest(params,w);
     

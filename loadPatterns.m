@@ -7,7 +7,7 @@ function p = loadPatterns(params,n,actFunct)
     
     x = orderTemporalSerie(n,params.patterns);
     
-%      save(['serie.mat'], 'x');
+      save(['serie.mat'], 'x');
     
     x = normalize(x,actFunct);
     
