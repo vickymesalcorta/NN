@@ -13,13 +13,10 @@ function m = main(actFunct, eta, alpha, arq, epocs, training,n)
     % noise
     gBeta = 1;
     params.maxEpocs = epocs;
-    % cada cuantos pasos se pone ruido
-    params.maxBadSteps = 15;
-    % 1000 patterns totales, uso menos para poder debuggear
     params.patterns = 1000;
     params.training = training;  
     % END_DEFINES
-    params.test = params.patterns - params.training;
+    params.test = params.patterns - params.training - n;
     params.eta = eta;
     params.alpha = alpha;
     params.arq = arq;
@@ -48,5 +45,6 @@ function m = main(actFunct, eta, alpha, arq, epocs, training,n)
     
     m.trainedNetwork = trainedNetwork;
     m.params = params;
-    % Agregar porcentajes de acierto etc.
+    
+    
 end
