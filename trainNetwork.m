@@ -122,8 +122,8 @@ function trainedNetwork = trainNetwork(params)
     
     
     % GRAFICO EL OUTPUT DEL TEST VS EL ESPERADO DEL TEST
-    x = linspace(0,size(test.result,2),size(test.result,2));
-    h = plot(x,test.result,x,params.testExpected);
+    x = linspace(0,size(trainedNetwork.test.result,2),size(trainedNetwork.test.result,2));
+    h = plot(x,trainedNetwork.test.result,x,params.testExpected);
     drawnow;
     % END
 end
