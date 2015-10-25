@@ -1,4 +1,4 @@
-function m = main(actFunct, eta, alpha, arq, epocs, training,n)
+function m = main(actFunct, eta, alpha, arq, epocs, training, n, adaptInc, adaptDec, adaptStep, rollback)
     
     % n is the ammount of previous values we are taking into account to
     % predic the next one
@@ -19,6 +19,10 @@ function m = main(actFunct, eta, alpha, arq, epocs, training,n)
     params.test = params.patterns - params.training - n;
     params.eta = eta;
     params.alpha = alpha;
+    params.adaptInc = adaptInc;
+    params.adaptDec = adaptDec;
+    params.adaptStep = adaptStep;
+    params.rollback = rollback;
     params.arq = arq;
     % Ej: Arq = [2,4,5,1] layers = 3
     params.layers = size(arq, 2) - 1;

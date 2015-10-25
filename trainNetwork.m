@@ -6,7 +6,6 @@ function trainedNetwork = trainNetwork(params)
 	w = params.w;
 	alpha = params.alpha;
 	eta = params.eta;
-% 	meanError = 1;
     badSteps = 0;
     goodSteps = 0;
 	epocs = 1;
@@ -35,9 +34,7 @@ function trainedNetwork = trainNetwork(params)
     while epocs <= params.maxEpocs
 
 	    % 1_ SHUFFLE PATTERNS (input and expected) with the same orderç
-        
-        % FALTA TESTEAR TODO EL SHUFFLE
-  	    shuffleOrder = randperm(params.training);
+        shuffleOrder = randperm(params.training);
   	    trainingInput = shufflePatterns(shuffleOrder, params.trainingInput);
   	    trainingExpected = shufflePatterns(shuffleOrder, params.trainingExpected);
         
@@ -49,8 +46,6 @@ function trainedNetwork = trainNetwork(params)
             varW = answer.newVarW; 
             result(i) = answer.V;
         end
-        %test = runTest(params,w);    
-        %trainedNetwork.iterError(iter) = test.meanError;   
         
 	    for i = 1:params.training
 	        output = runPattern(params, w, trainingInput(:,i));
@@ -61,20 +56,13 @@ function trainedNetwork = trainNetwork(params)
 	    meanError = mean(errorVector);
 	    trainedNetwork.iterError(iter) = meanError;
         
-	    if(iter >= 2)
+	    if params.rollback && iter >= 2
 	    	if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
 	    		% Paso bueno
                 disp('PASO BUENO');
                 disp('error: ');
                 disp(trainedNetwork.iterError(iter));
-                
-%                 if mod(epocs,2) == 0   
-%                       x = linspace(0,size(test.result,2),size(test.result,2));
-%                       h = plot(x,test.result,x,params.testExpected);
-%                       delete(h_old);
-%                       h_old = h;
-%                       drawnow;
-%                 end
+
                 if mod(epocs,10) == 0   
                       x = linspace(0,size(result,2),size(result,2));
                       h = plot(x,result,'*',x,params.trainingExpected,'+');
@@ -83,23 +71,33 @@ function trainedNetwork = trainNetwork(params)
                       drawnow;
                 end
                 
-                
+                alpha = params.alpha;
                 badSteps = 0;
                 goodSteps = goodSteps + 1;
                 lastW = w;
                 lastErrorVector = errorVector;
+                
+                % eta adaptativo incrementar
+                if params.adaptStep > 0 && goodSteps == params.adaptStep
+					eta = eta + params.adaptInc;
+					goodSteps = 0;
+				end
 
             else
                 
-	    	%Paso malo      
-            badSteps = badSteps + 1;
-            goodSteps = 0;
-            iter = iter-1;	
-            
-            % Si es un paso malo, tiro los pesos y vuelvo al anterior
-            w = lastW;
-            errorVector = lastErrorVector;
-            
+                % Paso malo
+                alpha = 0;
+                badSteps = badSteps + 1;
+                goodSteps = 0;
+                % Si es un paso malo, tiro los pesos y vuelvo al anterior
+                w = lastW;
+                iter = iter-1;	
+                errorVector = lastErrorVector;
+                
+                % eta adaptativo decrementar
+                if params.adaptStep > 0
+                    eta = (1-params.adaptDec) * eta;
+                end
             end
         end  
         iter = iter + 1;
