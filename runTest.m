@@ -12,5 +12,8 @@ function ans = runTest(params, w)
 
 	ans.meanError = mean(errorVector);
     ans.result = result;
+    
+    disp('El error en el testeo es de:');
+    disp(meanError);
 
 end
