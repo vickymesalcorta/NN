@@ -75,9 +75,9 @@ function trainedNetwork = trainNetwork(params)
 %                       h_old = h;
 %                       drawnow;
 %                 end
-                if mod(epocs,1) == 0   
+                if mod(epocs,10) == 0   
                       x = linspace(0,size(result,2),size(result,2));
-                      h = plot(x,result,x,params.trainingExpected);
+                      h = plot(x,result,'*',x,params.trainingExpected,'+');
                       delete(h_old);
                       h_old = h;
                       drawnow;

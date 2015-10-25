@@ -6,6 +6,9 @@ function p = loadPatterns(params,n,actFunct)
 	% POR AHORA LO USO PARA NO PERDER TIEMPO EN ESO
     
     x = orderTemporalSerie(n,params.patterns);
+    
+%      save(['serie.mat'], 'x');
+    
     x = normalize(x,actFunct);
     
 	params.trainingInput = zeros(n, params.training);
@@ -18,9 +21,9 @@ function p = loadPatterns(params,n,actFunct)
     %FRANJA MEDIA PARA QUE NO PESEN TANTO
     i = 1;
     while i < params.training;
-        exp = params.trainingExpected(:,i);
-        if  exp > 0.2 && exp < 0.8
-            if rand > 0.2
+        exp = abs(params.trainingExpected(:,i));
+        if  exp < 0.6
+            if rand > 1
                 params.trainingExpected(:,i) = [];
                 params.trainingInput(:,i)= [];
                 params.patterns = params.patterns -1;

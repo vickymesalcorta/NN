@@ -27,6 +27,7 @@ function m = main(actFunct, eta, alpha, arq, epocs, training,n)
     params.layers = size(arq, 2) - 1;
     % Load weights, patterns and activation function
     params.w = initWeights(arq);
+    params.n = n;
     
     params = loadPatterns(params,n,actFunct);
     
