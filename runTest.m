@@ -5,23 +5,23 @@ function ans = runTest(params, w)
     bad = 0;
     good = 0;
     
-	for i=1:testSize
-		output = runPattern(params, w, params.testInput(:,i));
-		val = output{2}(params.layers);
+    for i=1:testSize
+        output = runPattern(params, w, params.testInput(:,i));
+        val = output{2}(params.layers);
         result(i) = val{1};
         dif = params.testExpected(:,i) - result(i);
-		errorVector(i) = ((dif) ^2);
-        
+        errorVector(i) = ((dif) ^2);
+
         % TOMAMOS COMO PASO BUENO, SI LA DIFERENCIA ES MENOR AL 10% DEL
         % VALOR ESPERADO
-        if abs(dif) <= abs((0.1 * params.testInput(:,i)))
+        if abs(dif) <= abs((0.1 * params.testExpected(:,i)))
             good = good + 1;
         else
             bad = bad + 1;
         end
-	end
+    end
 
-	ans.meanError = mean(errorVector);
+    ans.meanError = mean(errorVector);
     ans.result = result;
     ans.good = (good/testSize)*100;
     ans.bad = (bad/testSize)*100;
