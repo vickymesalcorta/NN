@@ -54,15 +54,30 @@ function trainedNetwork = trainNetwork(params)
 	    % error after all imputs used once        
 	    meanError = mean(errorVector);
 	    trainedNetwork.iterError(iter) = meanError;
+        
+        
+        if iter >= 2 && trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
+           
+            disp(meanError);
 
+%             if mod(epocs,100) == 0   
+%               x = linspace(0,size(result,2),size(result,2));
+%               h = plot(x,result,'*',x,params.trainingExpected,'+');
+%               delete(h_old);
+%               h_old = h;
+%               drawnow;
+%             end
+        end
+        
+        
+        
+        
 	    if params.rollback && iter >= 2
 	    	if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
-	    		% Paso bueno
-                disp('PASO BUENO');
-                disp('error: ');
-                disp(trainedNetwork.iterError(iter));
-
-                if mod(epocs,10) == 0   
+                
+                disp(meanError);
+                
+                if mod(epocs,100) == 0   
                   x = linspace(0,size(result,2),size(result,2));
                   h = plot(x,result,'*',x,params.trainingExpected,'+');
                   delete(h_old);
