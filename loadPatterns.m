@@ -3,6 +3,10 @@ function p = loadPatterns(params,n,actFunct)
     x = orderTemporalSerie(n,params.patterns);
     x = normalize(x,actFunct);
     
+    
+    save(['dataOrdenada.mat'], 'x');
+
+    
     x = shuffleData(x,params);
     
     
