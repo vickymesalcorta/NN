@@ -17,7 +17,6 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
     
     % Agrego el 0 al final para que tenga al igual que los otros deltas una unidad de mas
     % que corresponde al umbral, pero sera ignorada.
-
     delta{params.layers} = [(params.gp(H)+0.1) .* (S-V); 0];
     
     % 5_ Calculo los deltas para las capas anteriores
@@ -27,12 +26,10 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
     	% Transpongo para poder multiplicar con delta
         w = oldW{i}';
         % Delta calculado en paso previo
+        % Ignoro el 0 que agregue antes
         prevDelta = delta{i}(1:end-1);
         % Agrego -1 que seria la entrada a la unidad umbral.
-        % Creo que el -1 esta bien, pero preguntar por las dudas
-        % Ignoro el 0 que agregue antes        
         delta{i-1} = [params.gp(H{1}) + 0.1 ; -1]  .* (w * prevDelta);
-        
     end
 
     % 6_ Actualizar todas las conexiones
@@ -40,28 +37,25 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
     newVarW = cell(params.layers);
     
     for i = (params.layers):-1:1
-        % Calculo variacion de conexiones
-        % Ignoro el ultimo elemento que corresponde al umbral
-        
+
         if (i==1)
+            % Patter xi de entrada guardado en trainingOutput{3} ya que no se puede trainingOutput{0}
             o = trainingOutput{3};
         else
             o = trainingOutput{2}(i-1);
             o = o{1};
         end
         
-%  disp(o);
-        
+        % Calculo variacion de conexiones
+        % Ignoro el ultimo elemento que corresponde al umbral
         varWAux  = eta .* delta{i}(1:end-1) * [o;-1]';
         
         % Momentum: Termino que pesa el descenso promedio
         % Si alpha vale 0 no tendra efecto
-        
         newVarW{i} = varWAux + (alpha .* oldVarW{i});
         
         % Nueva conexion = Conexion anterior + variacion
         newW{i} = oldW{i} + newVarW{i};
-        
         
     end
 
