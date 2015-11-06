@@ -10,8 +10,6 @@ function trainedNetwork = trainNetworkNew(params)
     goodSteps = 0;
     epocs = 1;
     iter = 1;
-    % Este valor es la cantidad de patterns que se usaran para el eta adapt.
-    m = 1;
 
     % Vector con error CM de cada iteracion
     trainedNetwork.iterError = [];
@@ -49,61 +47,60 @@ function trainedNetwork = trainNetworkNew(params)
             w = answer.newW;
             varW = answer.newVarW;
 
-            if params.adaptStep > 0 && m == params.adaptM                
-                % Calculo el error que produjeron los últimos m pasos
+            if params.adaptStep > 0 && mod(i, params.adaptM) == 0
+                % Calculo el error que produjeron los últimos adaptM backprop
                 for j = 1:params.training
                    output = runPattern(params, w, trainingInput(:,j));
                    outputVe = output{2}(params.layers);
                    errorVector(j) = ((trainingExpected(:,j) - outputVe{1} ) ^2);
                 end
-
                 trainedNetwork.iterError(iter) = mean(errorVector);
-
                 if iter >= 2
+                    printf('Iter: %d, epocs: %d, eta: %f mejorError: %f \n', iter, epocs, eta, trainedNetwork.iterError(iter-1));
                     if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
+                        disp(trainedNetwork.iterError(iter));
+                        fflush(stdout);                        
+                        % PASO BUENO
                         alpha = params.alpha;
                         badSteps = 0;
                         goodSteps = goodSteps + 1;
                         lastW = w;
                         lastErrorVector = errorVector;
-
                         % eta adaptativo incrementar
                         if goodSteps == params.adaptStep
                            eta = eta + params.adaptInc;
                            goodSteps = 0;
                         end
                     else
+                        disp(trainedNetwork.iterError(iter));
+                        fflush(stdout);
+                        % PASO MALO
                         alpha = 0;
                         badSteps = badSteps + 1;
                         goodSteps = 0;
                         % Si es un paso malo, tiro los pesos y vuelvo al anterior
                         w = lastW;
-                        iter = iter-1;  
                         errorVector = lastErrorVector;
-                        
+                        iter = iter-1;
                         % eta adaptativo decrementar
-                        if params.adaptStep > 0
-                            eta = (1-params.adaptDec) * eta;
-                        end
+                        eta = (1-params.adaptDec) * eta;
                     end
                 end
-                m = 0;
                 iter = iter + 1;
             end
-            m = m + 1;
         end
         
+        % Esto se usa para backprop basico sin eta adapt
         if params.adaptStep == 0
             for i = 1:params.training
                output = runPattern(params, w, trainingInput(:,i));
                outputVe = output{2}(params.layers);
                errorVector(i) = ((trainingExpected(:,i) - outputVe{1} ) ^2);
             end
-    	      
+    	    % error after all imputs used once
     	    meanError = mean(errorVector);
-            printf(num2str(meanError));
-            printf('\n');
-            fflush(stdout);
+            % disp(meanError);
+            % fflush(stdout);
     	    trainedNetwork.epocsError(epocs) = meanError;
         end
         epocs = epocs + 1;
