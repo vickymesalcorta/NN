@@ -99,8 +99,8 @@ function trainedNetwork = trainNetworkNew(params)
             end
     	    % error after all imputs used once
     	    meanError = mean(errorVector);
-            % disp(meanError);
-            % fflush(stdout);
+            disp(meanError);
+            fflush(stdout);
     	    trainedNetwork.epocsError(epocs) = meanError;
         end
         epocs = epocs + 1;
