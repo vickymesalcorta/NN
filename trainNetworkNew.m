@@ -56,10 +56,11 @@ function trainedNetwork = trainNetworkNew(params)
                 end
                 trainedNetwork.iterError(iter) = mean(errorVector);
                 if iter >= 2
-                    printf('Iter: %d, epocs: %d, eta: %f mejorError: %f \n', iter, epocs, eta, trainedNetwork.iterError(iter-1));
+%                     printf('Iter: %d, epocs: %d, eta: %f mejorError: %f \n', iter, epocs, eta, trainedNetwork.iterError(iter-1));
+                    
                     if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
                         disp(trainedNetwork.iterError(iter));
-                        fflush(stdout);                        
+%                         fflush(stdout);                        
                         % PASO BUENO
                         alpha = params.alpha;
                         badSteps = 0;
@@ -72,8 +73,8 @@ function trainedNetwork = trainNetworkNew(params)
                            goodSteps = 0;
                         end
                     else
-                        disp(trainedNetwork.iterError(iter));
-                        fflush(stdout);
+                        % disp(trainedNetwork.iterError(iter));
+%                         fflush(stdout);
                         % PASO MALO
                         alpha = 0;
                         badSteps = badSteps + 1;
@@ -100,7 +101,7 @@ function trainedNetwork = trainNetworkNew(params)
     	    % error after all imputs used once
     	    meanError = mean(errorVector);
             disp(meanError);
-            fflush(stdout);
+%             fflush(stdout);
     	    trainedNetwork.epocsError(epocs) = meanError;
         end
         epocs = epocs + 1;
@@ -116,8 +117,8 @@ function trainedNetwork = trainNetworkNew(params)
     
     
     % GRAFICO EL OUTPUT DEL TEST VS EL ESPERADO DEL TEST
-    % x = linspace(0,size(trainedNetwork.test.result,2),size(trainedNetwork.test.result,2));
-    % h = plot(x,trainedNetwork.test.result,x,params.testExpected);
-    % drawnow;
-    % END
+    x = linspace(0,size(trainedNetwork.test.result,2),size(trainedNetwork.test.result,2));
+    h = plot(x,trainedNetwork.test.result,x,params.testExpected);
+    drawnow;
+    END
 end
