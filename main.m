@@ -39,10 +39,10 @@ function m = main(actFunct, eta, alpha, arq, epocs, training, n, adaptInc, adapt
 
     disp('Finalizo luego de epocas: ');
     disp(trainedNetwork.epocs);
-    disp('con un error de: ');
-    disp(trainedNetwork.iterError(trainedNetwork.iter));
-    disp('el eta vale: ');
-    disp(trainedNetwork.eta);
+%     disp('con un error de: ');
+%     disp(trainedNetwork.iterError(trainedNetwork.iter));
+%     disp('el eta vale: ');
+%     disp(trainedNetwork.eta);
 
     
     m.trainedNetwork = trainedNetwork;

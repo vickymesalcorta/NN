@@ -75,15 +75,15 @@ function trainedNetwork = trainNetwork(params)
 	    if params.rollback && iter >= 2
 	    	if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
                 
-                disp(meanError);
+                % disp(meanError);
                 
-                if mod(epocs,100) == 0   
-                  x = linspace(0,size(result,2),size(result,2));
-                  h = plot(x,result,'*',x,params.trainingExpected,'+');
-                  delete(h_old);
-                  h_old = h;
-                  drawnow;
-                end
+                % if mod(epocs,100) == 0   
+                %   x = linspace(0,size(result,2),size(result,2));
+                %   h = plot(x,result,'*',x,params.trainingExpected,'+');
+                %   delete(h_old);
+                %   h_old = h;
+                %   drawnow;
+                % end
 
                 alpha = params.alpha;
                 badSteps = 0;
