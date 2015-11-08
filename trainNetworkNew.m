@@ -27,10 +27,10 @@ function trainedNetwork = trainNetworkNew(params)
     end
 
     % Para graficar como se va adaptando la función a la esperada
-    % figure;
-    % hold on; 
-    % h_old = plot(0,0);
-    % end
+    figure;
+    hold on; 
+    h_old = plot(0,0);
+
 
     while epocs <= params.maxEpocs
 	    % 1_ SHUFFLE PATTERNS (input and expected) with the same orderç
@@ -46,7 +46,7 @@ function trainedNetwork = trainNetworkNew(params)
             answer = backPropagation(params, w, i, trainingInput, trainingExpected, eta, alpha, varW);
             w = answer.newW;
             varW = answer.newVarW;
-
+                  
             if params.adaptStep > 0 && mod(i, params.adaptM) == 0
                 % Calculo el error que produjeron los últimos adaptM backprop
                 for j = 1:params.training
@@ -54,13 +54,16 @@ function trainedNetwork = trainNetworkNew(params)
                    outputVe = output{2}(params.layers);
                    errorVector(j) = ((trainingExpected(:,j) - outputVe{1} ) ^2);
                 end
+                
                 trainedNetwork.iterError(iter) = mean(errorVector);
                 if iter >= 2
-%                     printf('Iter: %d, epocs: %d, eta: %f mejorError: %f \n', iter, epocs, eta, trainedNetwork.iterError(iter-1));
                     
                     if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
+                        disp('ETA');
+                        disp(eta)
+                        disp('ERROR');
                         disp(trainedNetwork.iterError(iter));
-%                         fflush(stdout);                        
+                     
                         % PASO BUENO
                         alpha = params.alpha;
                         badSteps = 0;
@@ -73,8 +76,6 @@ function trainedNetwork = trainNetworkNew(params)
                            goodSteps = 0;
                         end
                     else
-                        % disp(trainedNetwork.iterError(iter));
-%                         fflush(stdout);
                         % PASO MALO
                         alpha = 0;
                         badSteps = badSteps + 1;
@@ -84,7 +85,11 @@ function trainedNetwork = trainNetworkNew(params)
                         errorVector = lastErrorVector;
                         iter = iter-1;
                         % eta adaptativo decrementar
-                        eta = (1-params.adaptDec) * eta;
+                        if eta < 0.01
+                            eta = 0.1;
+                        else
+                            eta = (1-params.adaptDec) * eta;
+                        end
                     end
                 end
                 iter = iter + 1;
@@ -94,31 +99,39 @@ function trainedNetwork = trainNetworkNew(params)
         % Esto se usa para backprop basico sin eta adapt
         if params.adaptStep == 0
             for i = 1:params.training
+               lastW = w;
                output = runPattern(params, w, trainingInput(:,i));
                outputVe = output{2}(params.layers);
+               result(i) = outputVe{1};
                errorVector(i) = ((trainingExpected(:,i) - outputVe{1} ) ^2);
             end
+
+            % x = linspace(0,size(result,2),size(result,2));
+            % h = plot(x,result,'*',x,params.trainingExpected,'+');
+            % delete(h_old);
+            % h_old = h;
+            % drawnow;
+                    
     	    % error after all imputs used once
     	    meanError = mean(errorVector);
             disp(meanError);
-%             fflush(stdout);
     	    trainedNetwork.epocsError(epocs) = meanError;
         end
         epocs = epocs + 1;
     end
-
+   
     trainedNetwork.iter = iter-1;
     trainedNetwork.epocs = epocs-1;
     trainedNetwork.eta = eta;
     trainedNetwork.w = w;
     trainedNetwork.errorVector = errorVector;
     
+    
     trainedNetwork.test = runTest(params,w);
     
     
     % GRAFICO EL OUTPUT DEL TEST VS EL ESPERADO DEL TEST
     x = linspace(0,size(trainedNetwork.test.result,2),size(trainedNetwork.test.result,2));
-    h = plot(x,trainedNetwork.test.result,x,params.testExpected);
+    h = plot(x,trainedNetwork.test.result,'*',x,params.testExpected,'+');
     drawnow;
-    END
 end

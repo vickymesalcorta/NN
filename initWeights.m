@@ -11,7 +11,7 @@ function w = initWeights(arq)
 		% Es decir el "1" es para llegar a la primera capa, es decir, pesos desde layer 0 A 1
 		
         % interval (a,b) with the formula r = a + (b-a).*rand(N,1).
-        w{layer} = 0.03 .* rand(arq(layer+1), arq(layer)+1);
+        w{layer} = 0.5 .* rand(arq(layer+1), arq(layer)+1);
     end
 
 end
