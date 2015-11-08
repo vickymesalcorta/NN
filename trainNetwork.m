@@ -16,7 +16,10 @@ function trainedNetwork = trainNetwork(params)
 
 	% Esto es para usar cuando descarto un w en parametros adaptativos
 	lastW = w;
-	lastErrorVector = ones(params.training);
+
+    % ESTO ESTA MAL!! CREA UNA MATRIZ DE N X N EN VEZ DE UN VECTOR!!
+    % Le agregue el "1," para arreglarlo, capaz por eso no nos andaba el eta adapt
+	lastErrorVector = ones(1,params.training);
 	
     % Empiezo con variacion 0
     varW = cell(params.layers);
@@ -72,7 +75,7 @@ function trainedNetwork = trainNetwork(params)
         
         
         
-	    if params.rollback && iter >= 2
+	    if adaptStep > 0 && iter >= 2
 	    	if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
                 
                 % disp(meanError);

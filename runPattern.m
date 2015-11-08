@@ -2,21 +2,26 @@
 
 function trainingOutput = runPattern(params, w, xi)
 
-	trainingOutput = cell(2);
+	% trainingOutput = cell(2);
 
 	% Entry for current layer
 	v = xi;
-    
+
 	% cell with input of current layers after g(h)
-	V = cell(params.layers);
+	% V = cell(params.layers);
 	% cell with outputs of current layer
-	H = cell(params.layers);
+	% H = cell(params.layers);
 	
 	for layer = 1:params.layers
-	   h = w{layer} * [v; -1];
- 	   H{layer} = h;
-	   v = params.g(h);
- 	   V{layer} = v;  
+		h = w{layer} * [v; -1];
+		H{layer} = h;
+		if layer == params.layers
+			% Aplico siempre tanh como función de activación de las neuronas de capa salida para obtener salidas entre -1 y 1
+	   		v = tanh(h);
+	   	else
+	   		v = params.g(h);
+	   	end
+ 	   	V{layer} = v;  
     end
    
     % H es 1, V es 2
