@@ -27,9 +27,9 @@ function trainedNetwork = trainNetworkNew(params)
     end
 
     % Para graficar como se va adaptando la función a la esperada
-    figure;
-    hold on; 
-    h_old = plot(0,0);
+    % figure;
+    % hold on; 
+    % h_old = plot(0,0);
 
 
     while epocs <= params.maxEpocs
@@ -99,7 +99,6 @@ function trainedNetwork = trainNetworkNew(params)
         % Esto se usa para backprop basico sin eta adapt
         if params.adaptStep == 0
             for i = 1:params.training
-               lastW = w;
                output = runPattern(params, w, trainingInput(:,i));
                outputVe = output{2}(params.layers);
                result(i) = outputVe{1};
@@ -113,9 +112,8 @@ function trainedNetwork = trainNetworkNew(params)
             % drawnow;
                     
     	    % error after all imputs used once
-            trainedNetwork.iterError(iter) = mean(errorVector);
     	    meanError = mean(errorVector);
-            disp(meanError);
+            % disp(meanError);
     	    trainedNetwork.epocsError(epocs) = meanError;
         end
         epocs = epocs + 1;

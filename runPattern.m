@@ -15,13 +15,13 @@ function trainingOutput = runPattern(params, w, xi)
 	for layer = 1:params.layers
 		h = w{layer} * [v; -1];
 		H{layer} = h;
-		if layer == params.layers
-			% Aplico siempre tanh como función de activación de las neuronas de capa salida para obtener salidas entre -1 y 1
-	   		v = tanh(h);
+		if params.actFunct == 0 && layer == params.layers
+			% Para Sigmoide: Funcion lineal en capa de salida para obtener salidas entre -1 y 1
+	   		v = (h.*2) - 1;
 	   	else
 	   		v = params.g(h);
 	   	end
- 	   	V{layer} = v;  
+ 	   	V{layer} = v;
     end
    
     % H es 1, V es 2

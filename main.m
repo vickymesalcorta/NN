@@ -10,7 +10,7 @@ function m = main(actFunct, eta, alpha, arq, epocs, training, adaptInc, adaptDec
     % beta: beta con el que se define g(x)
     % params.patterns: cantidad de patterns totales
     % params.training: cantidad de pattern para entrenar
-    gBeta = 1;
+    gBeta = 0.5;
     params.patterns = 1000;
     params.training = training;
     params.test = params.patterns - params.training - n;
@@ -23,6 +23,7 @@ function m = main(actFunct, eta, alpha, arq, epocs, training, adaptInc, adaptDec
     params.adaptDec = adaptDec;
     params.adaptStep = adaptStep;
     params.adaptM = adaptM;
+    params.actFunct = actFunct;
 
     % Ej: Arq = [2,4,5,1] layers = 3
     params.layers = size(arq, 2) - 1;
@@ -30,9 +31,9 @@ function m = main(actFunct, eta, alpha, arq, epocs, training, adaptInc, adaptDec
     params.w = initWeights(arq);
 
     
-    params = loadPatterns(params,n,actFunct);
+    params = loadPatterns(params,n);
     
-    params = loadActivationFunction(params, actFunct, gBeta);
+    params = loadActivationFunction(params, gBeta);
 
     trainedNetwork = trainNetworkNew(params);
 
