@@ -104,16 +104,14 @@ function trainedNetwork = trainNetworkNew(params)
                result(i) = outputVe{1};
                errorVector(i) = ((trainingExpected(:,i) - outputVe{1} ) ^2);
             end
-
             % x = linspace(0,size(result,2),size(result,2));
             % h = plot(x,result,'*',x,params.trainingExpected,'+');
             % delete(h_old);
             % h_old = h;
             % drawnow;
-                    
+
     	    % error after all imputs used once
     	    meanError = mean(errorVector);
-            % disp(meanError);
     	    trainedNetwork.epocsError(epocs) = meanError;
         end
         epocs = epocs + 1;

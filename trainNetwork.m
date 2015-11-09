@@ -22,7 +22,7 @@ function trainedNetwork = trainNetwork(params)
 	lastErrorVector = ones(1,params.training);
 	
     % Empiezo con variacion 0
-    varW = cell(params.layers);
+    % varW = cell(params.layers);
     for i = 1:params.layers
         varW{i}= zeros(size(w{i}));
     end
