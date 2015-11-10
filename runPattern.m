@@ -15,8 +15,8 @@ function trainingOutput = runPattern(params, w, xi)
 		h = w{layer} * [v; -1];
 		H{layer} = h;
 		if params.actFunct == 0 && layer == params.layers
-			% Para Sigmoide: Funcion lineal en capa de salida para obtener salidas entre -1 y 1
-	   		v = (h.*2) - 1;
+			% Para Sigmoide: tan en capa de salida para obtener salidas entre -1 y 1
+	   		v = tanh(h);
 	   	else
 	   		v = params.g(h);
 	   	end

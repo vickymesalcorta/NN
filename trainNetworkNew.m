@@ -56,14 +56,13 @@ function trainedNetwork = trainNetworkNew(params)
                 end
                 
                 trainedNetwork.iterError(iter) = mean(errorVector);
+
                 if iter >= 2
+                    % printf('ETA: %f Mejor: %f\n', eta, trainedNetwork.iterError(iter-1));
+                    % printf('ERROR: %f\n',trainedNetwork.iterError(iter));
+                    % fflush(stdout);
                     
-                    if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)
-                        disp('ETA');
-                        disp(eta)
-                        disp('ERROR');
-                        disp(trainedNetwork.iterError(iter));
-                     
+                    if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)                     
                         % PASO BUENO
                         alpha = params.alpha;
                         badSteps = 0;
@@ -112,6 +111,8 @@ function trainedNetwork = trainNetworkNew(params)
 
     	    % error after all imputs used once
     	    meanError = mean(errorVector);
+            % disp(meanError);
+            % fflush(stdout);
     	    trainedNetwork.epocsError(epocs) = meanError;
         end
         epocs = epocs + 1;
