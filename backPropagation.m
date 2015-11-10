@@ -18,9 +18,9 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
     % Agrego el 0 al final para que tenga al igual que los otros deltas una unidad de mas
     % que corresponde al umbral, pero sera ignorada.
     
-    %delta{params.layers} = [(params.gp(H)+0.1) .* (S-V); 0];
+    delta{params.layers} = [(params.gp(H)+0.1) .* (S-V); 0];
     % Aplico siempre tanh como función de activación de la última neurona para obtener salidas entre -1 y 1
-    delta{params.layers} = [((sech(H).^2)+0.1) .* (S-V); 0];
+    %delta{params.layers} = [((params.glastp(H).^2)+0.1) .* (S-V); 0];
     
     % 5_ Calculo los deltas para las capas anteriores
     for i = (params.layers):-1:2

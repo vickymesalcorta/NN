@@ -17,13 +17,14 @@ function trainingOutput = runPattern(params, w, xi)
 		H{layer} = h;
 		if layer == params.layers
 			% Aplico siempre tanh como función de activación de las neuronas de capa salida para obtener salidas entre -1 y 1
-	   		v = tanh(h);
+	   		%v = tanh(h);
+            v = params.g(h);
 	   	else
 	   		v = params.g(h);
 	   	end
  	   	V{layer} = v;  
     end
-   
+    
     % H es 1, V es 2
 	trainingOutput{1} = H;
     trainingOutput{2} = V;

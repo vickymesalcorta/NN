@@ -6,8 +6,10 @@ function y = loadActivationFunction(params, actFunc, B)
 		params.gp = @(x)(sech(x).^2);
 	else
 		% Sigmoidea
-		params.g = @(x)(1./(1 + exp(x.*(-2*B))));
+        B = 0.6;
+		params.g = @(x)(1./(1 + exp(x*(-2*B))));
 		params.gp = @(x)(2*B*params.g(1-params.g(x)));
+        
 	end
 	y = params;
 end

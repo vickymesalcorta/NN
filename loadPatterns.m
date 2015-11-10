@@ -16,11 +16,6 @@ function p = loadPatterns(params,n,actFunct)
     params.trainingExpected = zeros(1, params.training);
     params.trainingExpected = x(1:params.training,n+1)';
     
-    
-    
-    
-    
-    
     params.testInput = zeros(n, params.test);
     params.testInput = x(params.training+1:params.patterns-n,1:n)';
 

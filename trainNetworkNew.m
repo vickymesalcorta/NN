@@ -49,9 +49,11 @@ function trainedNetwork = trainNetworkNew(params)
                   
             if params.adaptStep > 0 && mod(i, params.adaptM) == 0
                 % Calculo el error que produjeron los últimos adaptM backprop
+                
                 for j = 1:params.training
                    output = runPattern(params, w, trainingInput(:,j));
                    outputVe = output{2}(params.layers);
+                   result(j) = outputVe{1};
                    errorVector(j) = ((trainingExpected(:,j) - outputVe{1} ) ^2);
                 end
                 
@@ -63,7 +65,13 @@ function trainedNetwork = trainNetworkNew(params)
                         disp(eta)
                         disp('ERROR');
                         disp(trainedNetwork.iterError(iter));
-                     
+                        
+%                         x = linspace(0,size(result,2),size(result,2));
+%                         h = plot(x,result,'*',x,params.trainingExpected,'+');
+%                         delete(h_old);
+%                         h_old = h;
+%                         drawnow;
+                      
                         % PASO BUENO
                         alpha = params.alpha;
                         badSteps = 0;
@@ -106,12 +114,13 @@ function trainedNetwork = trainNetworkNew(params)
                errorVector(i) = ((trainingExpected(:,i) - outputVe{1} ) ^2);
             end
 
-            % x = linspace(0,size(result,2),size(result,2));
-            % h = plot(x,result,'*',x,params.trainingExpected,'+');
-            % delete(h_old);
-            % h_old = h;
-            % drawnow;
-                    
+%             x = linspace(0,size(result,2),size(result,2));
+%             h = plot(x,result,'*',x,params.trainingExpected,'+');
+%             %h = plot(x,result,x,params.trainingExpected);
+%             delete(h_old);
+%             h_old = h;
+%             drawnow;
+%                     
     	    % error after all imputs used once
             trainedNetwork.iterError(iter) = mean(errorVector);
     	    meanError = mean(errorVector);
