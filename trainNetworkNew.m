@@ -59,9 +59,9 @@ function trainedNetwork = trainNetworkNew(params)
                 % printf('error: %f iter: %d\n',trainedNetwork.iterError(iter), iter);
                 % fflush(stdout);
                 if iter >= 2
-                    % printf('ETA: %f Mejor: %f\n', eta, trainedNetwork.iterError(iter-1));
-                    % printf('ERROR: %f\n',trainedNetwork.iterError(iter));
-                    % fflush(stdout);
+                    printf('ETA: %f Mejor: %f\n', eta, trainedNetwork.iterError(iter-1));
+                    printf('ERROR: %f\n',trainedNetwork.iterError(iter));
+                    fflush(stdout);
                     
                     if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)                     
                         % PASO BUENO
@@ -86,7 +86,7 @@ function trainedNetwork = trainNetworkNew(params)
                         iter = iter-1;
                         % eta adaptativo decrementar
                         if eta < 0.01
-                            eta = 0.1;
+                            eta = 0.08;
                         else
                             eta = (1-params.adaptDec) * eta;
                         end
@@ -112,8 +112,12 @@ function trainedNetwork = trainNetworkNew(params)
 
     	    % error after all imputs used once
     	    meanError = mean(errorVector);
-%             printf('error: %f epoca: %d\n',meanError, epocs);
-%             fflush(stdout);
+
+            % printf('error: %f epoca: %d\n',meanError, epocs);
+            % fflush(stdout);
+            % disp('error');
+            % disp(meanError);
+            
     	    trainedNetwork.epocsError(epocs) = meanError;
         end
         epocs = epocs + 1;
@@ -126,7 +130,7 @@ function trainedNetwork = trainNetworkNew(params)
     trainedNetwork.errorVector = errorVector;
     
     
-    trainedNetwork.test = runExternalTest(params,w);
+    trainedNetwork.test = runTest(params,w);
     
     
     % GRAFICO EL OUTPUT DEL TEST VS EL ESPERADO DEL TEST
