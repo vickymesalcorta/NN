@@ -54,11 +54,11 @@ function m = main(actFunct, eta, alpha, arq, epocs, training, delta, adaptInc, a
     m.trainedNetwork = trainedNetwork;
     m.params = params;
     
-    disp('W_1');
-    disp(trainedNetwork.w{1});
-    disp('W_2');
-    disp(trainedNetwork.w{2});
-    disp('W_3');
-    disp(trainedNetwork.w{3});
+    % disp('W_1');
+    % disp(trainedNetwork.w{1});
+    % disp('W_2');
+    % disp(trainedNetwork.w{2});
+    % disp('W_3');
+    % disp(trainedNetwork.w{3});
     
 end

@@ -16,12 +16,15 @@ function ans = runExternalTest(params, w)
         output = runPattern(params, w, params.testInput(:,i));
         val = output{2}(params.layers);
         result(i) = val{1};
-        dif = params.testExpected(:,i) - result(i);
+        % Desnormalizo
+        result(i) = result(i).*4;
+        % Desnormalizo solo el expected
+        dif = (params.testExpected(:,i).*4) - (result(i));
         errorVector(i) = ((dif) ^2);
 
         % TOMAMOS COMO PASO BUENO, SI LA DIFERENCIA ES MENOR AL 10% DEL
         % VALOR ESPERADO
-        if abs(dif) <= abs((diezpc * params.testExpected(:,i)))
+        if abs(dif) <= abs((diezpc * (params.testExpected(:,i).*4)))
             diez_good = diez_good + 1;
         else
             diez_bad = diez_bad + 1;
@@ -29,7 +32,7 @@ function ans = runExternalTest(params, w)
 
         % TOMAMOS COMO PASO BUENO, SI LA DIFERENCIA ES MENOR AL 5% DEL
         % VALOR ESPERADO
-        if abs(dif) <= abs((cincopc * params.testExpected(:,i)))
+        if abs(dif) <= abs((cincopc * (params.testExpected(:,i).*4)))
             cinco_good = cinco_good + 1;
         else
             cinco_bad = cinco_bad + 1;
@@ -37,7 +40,7 @@ function ans = runExternalTest(params, w)
 
         % TOMAMOS COMO PASO BUENO, SI LA DIFERENCIA ES MENOR AL 10% DEL
         % VALOR ESPERADO
-        if abs(dif) <= abs((unopc * params.testExpected(:,i)))
+        if abs(dif) <= abs((unopc * (params.testExpected(:,i).*4)))
             uno_good = uno_good + 1;
         else
             uno_bad = uno_bad + 1;
