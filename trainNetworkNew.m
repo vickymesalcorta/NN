@@ -112,8 +112,11 @@ function trainedNetwork = trainNetworkNew(params)
 
     	    % error after all imputs used once
     	    meanError = mean(errorVector);
-            printf('error: %f epoca: %d\n',meanError, epocs);
-            fflush(stdout);
+            % printf('error: %f epoca: %d\n',meanError, epocs);
+            % fflush(stdout);
+            % disp('error');
+            % disp(meanError);
+            
     	    trainedNetwork.epocsError(epocs) = meanError;
         end
         epocs = epocs + 1;
