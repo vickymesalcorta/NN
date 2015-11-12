@@ -10,7 +10,7 @@ function ans = runTest(params, w)
     cincopc = 0.05;
     uno_bad = 0;
     uno_good = 0;
-    unopc = 0.1;
+    unopc = 0.01;
     
     for i=1:testSize
         output = runPattern(params, w, params.testInput(:,i));
