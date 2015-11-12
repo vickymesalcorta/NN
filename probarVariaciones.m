@@ -14,4 +14,4 @@
 
 m = main(params.actFunct,params.eta, params.alpha, params.arq, params.epocs, ...
 params.training, params.delta, params.adaptInc, params.adaptDec, params.adaptStep, params.adaptM);
-save(['[' num2str(params.arq) '] BESTRESULT.mat'], 'm');
+save(['[' num2str(params.arq) '] BestRESULT.mat'], 'm');

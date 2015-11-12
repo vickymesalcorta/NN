@@ -1,4 +1,4 @@
-function ans = runTest(params, w)
+function ans = runExternalTest(params, w)
 
 	testSize = params.test;
 	errorVector = [];
