@@ -56,7 +56,8 @@ function trainedNetwork = trainNetworkNew(params)
                 end
                 
                 trainedNetwork.iterError(iter) = mean(errorVector);
-
+                % printf('error: %f iter: %d\n',trainedNetwork.iterError(iter), iter);
+                % fflush(stdout);
                 if iter >= 2
                     % printf('ETA: %f Mejor: %f\n', eta, trainedNetwork.iterError(iter-1));
                     % printf('ERROR: %f\n',trainedNetwork.iterError(iter));
@@ -111,8 +112,8 @@ function trainedNetwork = trainNetworkNew(params)
 
     	    % error after all imputs used once
     	    meanError = mean(errorVector);
-            % disp(meanError);
-            % fflush(stdout);
+%             printf('error: %f epoca: %d\n',meanError, epocs);
+%             fflush(stdout);
     	    trainedNetwork.epocsError(epocs) = meanError;
         end
         epocs = epocs + 1;
@@ -125,7 +126,7 @@ function trainedNetwork = trainNetworkNew(params)
     trainedNetwork.errorVector = errorVector;
     
     
-    trainedNetwork.test = runTest(params,w);
+    trainedNetwork.test = runExternalTest(params,w);
     
     
     % GRAFICO EL OUTPUT DEL TEST VS EL ESPERADO DEL TEST

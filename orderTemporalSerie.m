@@ -1,7 +1,7 @@
-function x = orderTemporalSerie(n,size)
+function x = orderTemporalSerie(n,size, fileName)
 
-    load('serieTemporal.mat');
-    
+    load(fileName);
+
     % n es la cantidad de pasos anteriores de los
     % cuales depende el paso siguiente. En principio debería ser
     % menor a 4

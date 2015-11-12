@@ -1,4 +1,4 @@
-function m = main(actFunct, eta, alpha, arq, epocs, training, adaptInc, adaptDec, adaptStep, adaptM)
+function m = main(actFunct, eta, alpha, arq, epocs, training, delta, adaptInc, adaptDec, adaptStep, adaptM)
 
     % n is the ammount of previous values we are taking into account to
     % predic the next one
@@ -24,6 +24,7 @@ function m = main(actFunct, eta, alpha, arq, epocs, training, adaptInc, adaptDec
     params.adaptStep = adaptStep;
     params.adaptM = adaptM;
     params.actFunct = actFunct;
+    params.delta = delta;
 
     % Ej: Arq = [2,4,5,1] layers = 3
     params.layers = size(arq, 2) - 1;
@@ -45,9 +46,19 @@ function m = main(actFunct, eta, alpha, arq, epocs, training, adaptInc, adaptDec
     disp(mean(trainedNetwork.errorVector));
     disp('el eta vale: ');
     disp(trainedNetwork.eta);
+    disp('Arquitectura');
+    disp(arq);
+    disp('Uso Delta??');
+    disp(delta);
     
     m.trainedNetwork = trainedNetwork;
     m.params = params;
     
+    disp('W_1');
+    disp(trainedNetwork.w{1});
+    disp('W_2');
+    disp(trainedNetwork.w{2});
+    disp('W_3');
+    disp(trainedNetwork.w{3});
     
 end

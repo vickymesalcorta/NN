@@ -1,6 +1,6 @@
 function p = loadPatterns(params,n)
 
-    x = orderTemporalSerie(n,params.patterns);
+    x = orderTemporalSerie(n,params.patterns, 'serieTemporal.mat');
     x = normalize(x,params);
     x = shuffleData(x,params);
        
