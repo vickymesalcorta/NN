@@ -1,4 +1,3 @@
-% MEJOR QUE ENCONTRE PARA PARAMETROS ADAPTATIVOS
 
     params = struct(...
         'actFunct', 1, ...
@@ -17,4 +16,5 @@
 
 m = main(params.actFunct,params.eta, params.alpha, params.arq, params.epocs, ...
 params.training, params.delta, params.adaptInc, params.adaptDec, params.adaptStep, params.adaptM);
+
 save(['[' num2str(params.arq) '] '], 'm');
