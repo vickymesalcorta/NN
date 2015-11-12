@@ -19,15 +19,22 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
     % que corresponde al umbral, pero sera ignorada.
     if params.actFunct == 1
         % tanh
-        % Con mejora delta 0.1
-        delta{params.layers} = [(params.gp(H)+0.1) .* (S-V); 0];
-
-        % Sin mejora delta 0.1
-        % delta{params.layers} = [(params.gp(H)) .* (S-V); 0];
+        if params.delta == 1
+            % Con mejora delta 0.1
+            delta{params.layers} = [(params.gp(H)+0.1) .* (S-V); 0];
+        elseif params.delta == 0
+            % Sin mejora delta 0.1
+            delta{params.layers} = [(params.gp(H)) .* (S-V); 0];
+        end
     elseif params.actFunct == 0
         % sigmoide en capa de salida derivada de tanh
-        % Con mejora delta 0.1
-        delta{params.layers} = [((sech(H).^2)+0.1) .* (S-V); 0];
+        if params.delta == 1
+            % Con mejora delta 0.1
+            delta{params.layers} = [((sech(H).^2)+0.1) .* (S-V); 0];
+        elseif params.delta == 0
+            % Sin mejora delta 0.1
+            delta{params.layers} = [(sech(H).^2) .* (S-V); 0];
+        end
     end
     
     % 5_ Calculo los deltas para las capas anteriores
@@ -39,13 +46,14 @@ function ans = backPropagation(params, oldW, i, trainingInput, trainingExpected,
         % Delta calculado en paso previo
         % Ignoro el 0 que agregue antes
         prevDelta = delta{i}(1:end-1);
-        
         % Agrego -1 que seria la entrada a la unidad umbral.
-        % Con mejora delta 0.1
-        delta{i-1} = [params.gp(H{1}) + 0.1 ; -1]  .* (w * prevDelta);
-        
-        % Sin mejora delta 0.1
-        % delta{i-1} = [params.gp(H{1}); -1]  .* (w * prevDelta);
+        if params.delta == 1
+            % Con mejora delta 0.1
+            delta{i-1} = [params.gp(H{1}) + 0.1 ; -1]  .* (w * prevDelta);
+        elseif params.delta == 0
+            % Sin mejora delta 0.1
+            delta{i-1} = [params.gp(H{1}); -1]  .* (w * prevDelta);
+        end
     end
 
     % 6_ Actualizar todas las conexiones
