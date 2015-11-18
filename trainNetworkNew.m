@@ -27,9 +27,9 @@ function trainedNetwork = trainNetworkNew(params)
     end
 
     % Para graficar como se va adaptando la función a la esperada
-    % figure;
-    % hold on; 
-    % h_old = plot(0,0);
+    figure;
+    hold on; 
+    h_old = plot(0,0);
 
 
     while epocs <= params.maxEpocs
@@ -52,19 +52,37 @@ function trainedNetwork = trainNetworkNew(params)
                 for j = 1:params.training
                    output = runPattern(params, w, trainingInput(:,j));
                    outputVe = output{2}(params.layers);
+                   result(j) = outputVe{1};
                    errorVector(j) = ((trainingExpected(:,j) - outputVe{1} ) ^2);
                 end
                 
                 trainedNetwork.iterError(iter) = mean(errorVector);
+                
                 % printf('error: %f iter: %d\n',trainedNetwork.iterError(iter), iter);
                 % fflush(stdout);
+                
                 if iter >= 2
-                    printf('ETA: %f Mejor: %f\n', eta, trainedNetwork.iterError(iter-1));
-                    printf('ERROR: %f\n',trainedNetwork.iterError(iter));
-                    fflush(stdout);
+ 
                     
                     if trainedNetwork.iterError(iter) < trainedNetwork.iterError(iter-1)                     
                         % PASO BUENO
+                        
+                              
+                         if mod(epocs,1) == 0
+                            x = linspace(0,size(result,2),size(result,2));
+                            h = plot(x,result,'*',x,params.trainingExpected,'+');
+                            delete(h_old);
+                            h_old = h;
+                            drawnow;
+                            
+                            disp('ERROR: ');
+                            disp(trainedNetwork.iterError(iter));
+                            
+%                             plot(trainedNetwork.iterError);
+%                             drawnow;
+                        end
+                        
+                        
                         alpha = params.alpha;
                         badSteps = 0;
                         goodSteps = goodSteps + 1;
@@ -104,19 +122,22 @@ function trainedNetwork = trainNetworkNew(params)
                result(i) = outputVe{1};
                errorVector(i) = ((trainingExpected(:,i) - outputVe{1} ) ^2);
             end
-            % x = linspace(0,size(result,2),size(result,2));
-            % h = plot(x,result,'*',x,params.trainingExpected,'+');
-            % delete(h_old);
-            % h_old = h;
-            % drawnow;
+            
+           
 
     	    % error after all imputs used once
     	    meanError = mean(errorVector);
+            
+             if mod(epocs,10) == 0
+                x = linspace(0,size(result,2),size(result,2));
+                h = plot(x,result,'*',x,params.trainingExpected,'+');
+                delete(h_old);
+                h_old = h;
+                drawnow;
+                disp('Error');
+                disp(meanError);
+            end
 
-            % printf('error: %f epoca: %d\n',meanError, epocs);
-            % fflush(stdout);
-            % disp('error');
-            % disp(meanError);
             
     	    trainedNetwork.epocsError(epocs) = meanError;
         end

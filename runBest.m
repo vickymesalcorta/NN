@@ -47,6 +47,6 @@ function z = runBest(patterns, fileName)
     output = runExternalTest(params, w);
     m = output.result;
 
-    % save(['[' num2str(params.arq) '] estimatedResultsTemporalSerie.mat'], 'm');
+    save(['[' num2str(params.arq) '] estimatedResultsTemporalSerie.mat'], 'm');
     
 end

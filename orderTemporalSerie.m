@@ -10,7 +10,7 @@ function x = orderTemporalSerie(n,size, fileName)
     x = zeros(size-n,n+1);
     for i = 1:size-n
        for j = 0:n
-            x(i,j+1) = m(1,j+i);
+            x(i,j+1) = serieTemporal(1,j+i);
        end
     end  
 end
